@@ -1,0 +1,44 @@
+- name: Get infos on HAProxy container
+  register: haproxy_infos
+  community.docker.docker_container_info:
+    name: haproxy
+
+- name: Ensure HAProxy is stopped
+  when: haproxy_infos.exists
+  community.docker.docker_container:
+    user: root
+    name: haproxy
+    state: stopped
+
+- name: Remove previous letsencrypt configuration to force renewal
+  become: true
+  ansible.builtin.file:
+    path: /etc/letsencrypt
+    state: absent
+
+- name: Install Certbot
+  become: true
+  vars:
+    certbot_install_method: snap
+    certbot_auto_renew_user: root
+    certbot_create_if_missing: true
+    certbot_admin_email: nicolas.casaux@outlook.com
+    certbot_certs:
+      - domains:
+          - nkzo.ovh
+          - adguard.nkzo.ovh
+          - argo-cd.nkzo.ovh
+          - grafana.nkzo.ovh
+          - unifi.nkzo.ovh
+          - turingpi2.nkzo.ovh
+          - home-assistant.nkzo.ovh
+          - portainer.nkzo.ovh
+  ansible.builtin.import_role:
+    name: geerlingguy.certbot
+
+- name: Ensure HAProxy is started
+  when: haproxy_infos.exists
+  community.docker.docker_container:
+    user: root
+    name: haproxy
+    state: started

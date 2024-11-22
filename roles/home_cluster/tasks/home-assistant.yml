@@ -1,0 +1,42 @@
+- name: Create home-assistant namespace
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: home-assistant
+
+- name: Create home-assistant directory
+  when: k3s_control_node is defined and k3s_control_node
+  ansible.builtin.file:
+    path: /mnt/ssd/home-assistant
+    state: directory
+    mode: "777"
+
+- name: Create persistent volume for Home Assistant
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: PersistentVolume
+      metadata:
+        name: home-assistant
+        labels:
+          app.kubernetes.io/name: home-assistant
+      spec:
+        storageClassName: nfs-client
+        capacity:
+          storage: 5Gi
+        accessModes:
+          - ReadWriteOnce
+        nfs:
+          server: "{{ inventory_hostname }}"
+          path: /mnt/ssd/home-assistant
+
+- name: Create Argo CD Application
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'files/apps/argo-cd/home-assistant.yaml') | from_yaml }}"

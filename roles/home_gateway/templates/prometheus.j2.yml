@@ -1,0 +1,9 @@
+scrape_configs:
+  - job_name: 'node-exporter'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ["{{ hostvars['rpi4'].ansible_host }}:9100"]
+  - job_name: 'cadvisor'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ["{{ hostvars['rpi4'].ansible_host }}:8080"]

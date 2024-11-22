@@ -1,0 +1,22 @@
+- name: Install cAdvisor
+  community.docker.docker_container:
+    name: cadvisor
+    image: gcr.io/cadvisor/cadvisor:v0.51.0
+    platform: linux/arm64
+    state: started
+    restart_policy: unless-stopped
+    network_mode: host
+    pid_mode: host
+    privileged: true
+    volumes:
+      - "/:/rootfs:ro"
+      - "/var/run:/var/run:ro"
+      - "/sys:/sys:ro"
+      - "/var/lib/docker:/var/lib/docker:ro"
+      - "/dev/disk:/dev/disk:ro"
+      - "/etc/machine-id:/etc/machine-id:ro"
+    devices:
+      - "/dev/kmsg"
+    command:
+      - --docker_only=true
+      - --housekeeping_interval=10s

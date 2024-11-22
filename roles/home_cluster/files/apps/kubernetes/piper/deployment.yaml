@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: piper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: piper
+  template:
+    metadata:
+      labels:
+        app: piper
+    spec:
+      nodeSelector:
+        node-type: local
+      containers:
+        - name: piper
+          image: rhasspy/wyoming-piper:1.5.0
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "256Mi"
+              cpu: "4"
+          args: ["--voice", "fr_FR-siwis-medium"]
+          ports:
+            - containerPort: 10200
+          volumeMounts:
+            - name: piper
+              mountPath: /data
+      volumes:
+        - name: piper
+          persistentVolumeClaim:
+            claimName: piper

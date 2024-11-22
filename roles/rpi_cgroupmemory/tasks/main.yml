@@ -1,0 +1,30 @@
+- name: Set cmdline.txt path for Debian 11
+  when:
+    - ansible_distribution == 'Debian'
+    - ansible_distribution_major_version == '11'
+  ansible.builtin.set_fact:
+    cmdline_txt_path: /boot/cmdline.txt
+
+- name: Set cmdline.txt path for Debian 12
+  when:
+    - ansible_distribution == 'Debian'
+    - ansible_distribution_major_version == '12'
+  ansible.builtin.set_fact:
+    cmdline_txt_path: /boot/firmware/cmdline.txt
+
+- name: Set "cgroup_enable=memory"
+  vars:
+    key: cgroup_enable
+    value: memory
+    update: false
+  ansible.builtin.import_tasks: update_cmdline_entry.yml
+
+- name: Set "cgroup_memory=1"
+  vars:
+    key: cgroup_memory
+    value: 1
+    update: false
+  ansible.builtin.import_tasks: update_cmdline_entry.yml
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

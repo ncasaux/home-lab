@@ -1,0 +1,42 @@
+- name: Create portainer namespace
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: portainer
+
+- name: Create portainer directory
+  when: k3s_control_node is defined and k3s_control_node
+  ansible.builtin.file:
+    path: /mnt/ssd/portainer
+    state: directory
+    mode: "777"
+
+- name: Create persistent volume for Portainer
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: PersistentVolume
+      metadata:
+        name: portainer
+        labels:
+          app.kubernetes.io/name: portainer
+      spec:
+        storageClassName: nfs-client
+        capacity:
+          storage: 5Gi
+        accessModes:
+          - ReadWriteOnce
+        nfs:
+          server: "{{ inventory_hostname }}"
+          path: /mnt/ssd/portainer
+
+- name: Create Argo CD Application
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'files/apps/argo-cd/portainer.yaml') | from_yaml }}"

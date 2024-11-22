@@ -1,0 +1,37 @@
+- name: Create '/mnt/ssd' folder on K3s server node
+  when: k3s_control_node is defined and k3s_control_node
+  become: true
+  ansible.builtin.file:
+    path: /mnt/ssd
+    state: directory
+    owner: root
+    group: root
+    mode: "777"
+
+- name: Mount '/mnt/ssd' folder on K3s server node
+  when: k3s_control_node is defined and k3s_control_node
+  become: true
+  ansible.posix.mount:
+    src: /dev/nvme0n1p1
+    path: /mnt/ssd
+    fstype: ext4
+    opts: defaults,noatime
+    state: mounted
+
+- name: Install NFS server on K3s server node
+  when: k3s_control_node is defined and k3s_control_node
+  become: true
+  vars:
+    nfs_exports: ["/mnt/ssd *(rw,no_subtree_check,no_root_squash)"]
+  ansible.builtin.import_role:
+    name: geerlingguy.nfs
+
+- name: Install NFS client
+  ansible.builtin.apt:
+    name: nfs-common
+
+- name: Create Argo CD Application
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'files/apps/argo-cd/nfs-subdir-external-provisioner.yaml') | from_yaml }}"

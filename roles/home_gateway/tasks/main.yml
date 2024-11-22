@@ -1,0 +1,56 @@
+- name: Configure PoE+ HAT fan speeds
+  become: true
+  ansible.builtin.blockinfile:
+    path: /boot/config.txt
+    block: |
+      # PoE+ Hat Fan Speeds
+      dtparam=poe_fan_temp0=60000
+      dtparam=poe_fan_temp1=65000
+      dtparam=poe_fan_temp2=70000
+      dtparam=poe_fan_temp3=75000
+
+- name: Install Docker
+  become: true
+  vars:
+    docker_users: "{{ ansible_user }}"
+    docker_daemon_options:
+      log-opts:
+        max-size: "10m"
+        max-file: "5"
+  ansible.builtin.import_role:
+    name: geerlingguy.docker
+
+- name: Creates a cron job to prune Docker resources
+  ansible.builtin.cron:
+    name: docker system prune
+    hour: "12"
+    user: "{{ ansible_user }}"
+    job: "docker system prune -af"
+
+- name: Install Adguard
+  tags: adguard
+  ansible.builtin.import_tasks: install_adguard.yml
+
+- name: Install HAProxy
+  tags: haproxy
+  ansible.builtin.import_tasks: install_haproxy.yml
+
+- name: Install Certbot
+  tags: certbot
+  ansible.builtin.import_tasks: install_certbot.yml
+
+- name: Install Node Exporter
+  tags: nodeexporter
+  ansible.builtin.import_tasks: install_nodeexporter.yml
+
+- name: Install cAdvisor
+  tags: cadvisor
+  ansible.builtin.import_tasks: install_cadvisor.yml
+
+- name: Install Prometheus
+  tags: prometheus
+  ansible.builtin.import_tasks: install_prometheus.yml
+
+- name: Install Portainer Agent
+  tags: portainer
+  ansible.builtin.import_tasks: install_portainer_agent.yml

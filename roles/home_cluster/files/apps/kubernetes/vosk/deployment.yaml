@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vosk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vosk
+  template:
+    metadata:
+      labels:
+        app: vosk
+    spec:
+      nodeSelector:
+        node-type: local
+      containers:
+        - name: vosk
+          image: rhasspy/wyoming-vosk:1.5.1
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "256Mi"
+              cpu: "4"
+          args: ["--data-dir", "/data", "--sentences-dir", "/data", "--preload-language", "fr", "--language", "fr", "--debug"]
+          ports:
+            - containerPort: 10300
+          volumeMounts:
+            - name: vosk
+              mountPath: /data
+      volumes:
+        - name: vosk
+          persistentVolumeClaim:
+            claimName: vosk

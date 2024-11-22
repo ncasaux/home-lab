@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: portainer
+  namespace: argo-cd
+spec:
+  project: default
+  source:
+    repoURL: https://portainer.github.io/k8s/
+    chart: portainer
+    targetRevision: '*'
+    helm:
+      valuesObject:
+        nodeSelector:
+          node-type: local
+        persistence:
+          enabled: true
+          storageClass: nfs-client
+          selector:
+            matchLabels:
+              app.kubernetes.io/name: portainer
+          size: 5Gi
+        ingress:
+          enabled: true
+          hosts:
+            - host: portainer.nkzo.ovh
+              paths:
+                - path: /
+                  pathType: Prefix
+        service:
+          type: ClusterIP
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: portainer
+  syncPolicy:
+    retry:
+      limit: 2
+      backoff:
+        duration: 5s
+        maxDuration: 3m0s
+        factor: 2
+    automated:
+      prune: false
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true

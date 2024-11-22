@@ -1,0 +1,64 @@
+- name: Install K3s
+  tags: k3s
+  ansible.builtin.import_tasks: k3s.yml
+
+- name: Create kubeconfig on K3s server node
+  tags: kubeconfig_k3s_server
+  ansible.builtin.import_tasks: kubeconfig_k3s_server.yml
+
+- name: Create kubeconfig on control node
+  tags: kubeconfig_control_node
+  ansible.builtin.import_tasks: kubeconfig_control_node.yml
+
+- name: Add node-type label to nodes
+  when: k3s_control_node is defined and k3s_control_node
+  loop: "{{ groups['k3s_cluster'] }}"
+  tags: node_type
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Node
+      metadata:
+        name: "{{ item }}"
+        labels:
+          node-type: "{{ hostvars[item]['node_type'] }}"
+
+- name: Install Helm
+  tags: helm
+  ansible.builtin.import_tasks: helm.yml
+
+- name: Install Argo CD
+  tags: argo-cd
+  ansible.builtin.import_tasks: argo-cd.yml
+
+- name: Install Kubernetes NFS Subdir External Provisioner
+  tags: nfs
+  ansible.builtin.import_tasks: nfs-subdir-external-provisioner.yml
+
+- name: Install Home Assistant
+  tags: home-assistant
+  ansible.builtin.import_tasks: home-assistant.yml
+
+- name: Install Duplicati
+  tags: duplicati
+  ansible.builtin.import_tasks: duplicati.yml
+
+- name: Install Vosk
+  tags: vosk
+  ansible.builtin.import_tasks: vosk.yml
+
+- name: Install Piper
+  tags: piper
+  ansible.builtin.import_tasks: piper.yml
+
+- name: Install Kube Prometheus Stack
+  tags: monitoring
+  ansible.builtin.import_tasks: kube-prometheus-stack.yml
+
+- name: Configure Grafana and import dashboards
+  tags: grafana
+  ansible.builtin.import_tasks: grafana.yml
+
+- name: Install Portainer
+  tags: portainer
+  ansible.builtin.import_tasks: portainer.yml

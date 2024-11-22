@@ -1,0 +1,14 @@
+- name: Apply configure_ssh role on k3s_cluster
+  hosts: k3s_cluster
+  gather_facts: false
+  vars:
+    ansible_host_key_checking: false
+  roles:
+    - configure_ssh
+
+- name: Apply home_cluster role on k3s_cluster
+  hosts: k3s_cluster
+  roles:
+    - rpi_cgroupmemory
+    - rpi_upgrade
+    - home_cluster

@@ -1,0 +1,130 @@
+- name: Ensure Grafana is available
+  delegate_to: localhost
+  run_once: true
+  register: result
+  until: result.status == 200
+  retries: 60
+  delay: 1
+  ansible.builtin.uri:
+    url: https://grafana.nkzo.ovh
+    status_code: 200
+
+- name: Create Prometheus RPi4 datasource
+  delegate_to: localhost
+  run_once: true
+  community.grafana.grafana_datasource:
+    grafana_url: https://grafana.nkzo.ovh
+    grafana_user: admin
+    grafana_password: "{{ home_cluster_grafana_admin_password }}"
+    name: Prometheus RPi4
+    uid: prometheus-rpi4
+    ds_type: prometheus
+    ds_url: "http://{{ hostvars['rpi4'].ansible_host }}:9090"
+
+- name: Import node-exporter-full dashboard
+  delegate_to: localhost
+  run_once: true
+  community.grafana.grafana_dashboard:
+    grafana_url: https://grafana.nkzo.ovh
+    grafana_user: admin
+    grafana_password: "{{ home_cluster_grafana_admin_password }}"
+    dashboard_id: 1860
+    dashboard_revision: 37
+    overwrite: true
+
+- name: Create Home-cluster folder
+  delegate_to: localhost
+  run_once: true
+  community.grafana.grafana_folder:
+    grafana_url: https://grafana.nkzo.ovh
+    grafana_user: admin
+    grafana_password: "{{ home_cluster_grafana_admin_password }}"
+    title: Home-cluster
+
+- name: Import k8s-views-global dashboard
+  delegate_to: localhost
+  run_once: true
+  community.grafana.grafana_dashboard:
+    grafana_url: https://grafana.nkzo.ovh
+    grafana_user: admin
+    grafana_password: "{{ home_cluster_grafana_admin_password }}"
+    dashboard_id: 15757
+    dashboard_revision: 37
+    folder: Home-cluster
+    overwrite: true
+
+- name: Import k8s-views-namespaces dashboard
+  delegate_to: localhost
+  run_once: true
+  community.grafana.grafana_dashboard:
+    grafana_url: https://grafana.nkzo.ovh
+    grafana_user: admin
+    grafana_password: "{{ home_cluster_grafana_admin_password }}"
+    dashboard_id: 15758
+    dashboard_revision: 35
+    folder: Home-cluster
+    overwrite: true
+
+- name: Import k8s-views-nodes dashboard
+  delegate_to: localhost
+  run_once: true
+  community.grafana.grafana_dashboard:
+    grafana_url: https://grafana.nkzo.ovh
+    grafana_user: admin
+    grafana_password: "{{ home_cluster_grafana_admin_password }}"
+    dashboard_id: 15759
+    dashboard_revision: 29
+    folder: Home-cluster
+    overwrite: true
+
+- name: Import k8s-views-pods dashboard
+  delegate_to: localhost
+  run_once: true
+  community.grafana.grafana_dashboard:
+    grafana_url: https://grafana.nkzo.ovh
+    grafana_user: admin
+    grafana_password: "{{ home_cluster_grafana_admin_password }}"
+    dashboard_id: 15760
+    dashboard_revision: 28
+    folder: Home-cluster
+    overwrite: true
+
+- name: Create Home-gateway folder
+  delegate_to: localhost
+  run_once: true
+  community.grafana.grafana_folder:
+    grafana_url: https://grafana.nkzo.ovh
+    grafana_user: admin
+    grafana_password: "{{ home_cluster_grafana_admin_password }}"
+    title: Home-gateway
+
+- name: Import rpi4_monitoring dashboard
+  delegate_to: localhost
+  run_once: true
+  community.grafana.grafana_dashboard:
+    grafana_url: https://grafana.nkzo.ovh
+    grafana_user: admin
+    grafana_password: "{{ home_cluster_grafana_admin_password }}"
+    path: "{{ role_path + '/files/dashboards/rpi4_monitoring.json' }}"
+    folder: Home-gateway
+    overwrite: true
+
+- name: Create Plantations folder
+  delegate_to: localhost
+  run_once: true
+  community.grafana.grafana_folder:
+    grafana_url: https://grafana.nkzo.ovh
+    grafana_user: admin
+    grafana_password: "{{ home_cluster_grafana_admin_password }}"
+    title: Plantations
+
+- name: Import temperature_humidite dashboard
+  delegate_to: localhost
+  run_once: true
+  community.grafana.grafana_dashboard:
+    grafana_url: https://grafana.nkzo.ovh
+    grafana_user: admin
+    grafana_password: "{{ home_cluster_grafana_admin_password }}"
+    path: "{{ role_path + '/files/dashboards/temperature_humidite.json' }}"
+    folder: Plantations
+    overwrite: true

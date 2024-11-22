@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vosk
+spec:
+  accessModes:
+    - ReadWriteOnce
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vosk
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: nfs-client

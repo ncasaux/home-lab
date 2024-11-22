@@ -1,0 +1,4 @@
+home_cluster_argocd_admin_password: password
+home_cluster_grafana_admin_password: password
+home_cluster_github_access_token: token
+home_cluster_home_assistant_prometheus_token: token

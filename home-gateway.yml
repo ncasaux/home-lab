@@ -1,0 +1,14 @@
+- name: Apply configure_ssh role on rpi4
+  hosts: rpi4
+  gather_facts: false
+  vars:
+    ansible_host_key_checking: false
+  roles:
+    - configure_ssh
+
+- name: Apply home_gateway role on rpi4
+  hosts: rpi4
+  roles:
+    - rpi_cgroupmemory
+    - rpi_upgrade
+    - home_gateway

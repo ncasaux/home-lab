@@ -1,0 +1,30 @@
+- name: Create Prometheus configuration directory
+  ansible.builtin.file:
+    path: "{{ '/home/' + ansible_user + '/prometheus' }}"
+    state: directory
+    mode: "755"
+
+- name: Copy Prometheus configuration file
+  ansible.builtin.template:
+    src: "{{ role_path + '/templates/prometheus.j2.yml' }}"
+    dest: "{{ '/home/' + ansible_user + '/prometheus/prometheus.yml' }}"
+    group: "{{ ansible_user }}"
+    owner: "{{ ansible_user }}"
+    mode: "644"
+
+- name: Create Docker volume
+  community.docker.docker_volume:
+    name: prometheus-data
+
+- name: Install Prometheus
+  community.docker.docker_container:
+    name: prometheus
+    image: prom/prometheus:v2.55.1
+    platform: linux/arm64
+    state: started
+    restart_policy: unless-stopped
+    volumes:
+      - "{{ '/home/' + ansible_user + '/prometheus' }}:/etc/prometheus"
+      - "prometheus-data:/prometheus"
+    ports:
+      - '9090:9090'

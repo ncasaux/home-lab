@@ -1,0 +1,43 @@
+- name: Install dependencies for Argo CD
+  when: k3s_control_node is defined and k3s_control_node
+  become: true
+  vars:
+    pip_install_packages:
+      - name: pyyaml
+      - name: kubernetes
+  ansible.builtin.import_role:
+    name: geerlingguy.pip
+
+- name: Add Argo chart repo
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.helm_repository:
+    name: argo
+    repo_url: "https://argoproj.github.io/argo-helm"
+
+- name: Deploy Argo CD chart
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.helm:
+    name: argo-cd
+    chart_ref: argo/argo-cd
+    release_namespace: argo-cd
+    create_namespace: true
+    update_repo_cache: true
+    chart_version: 7.7.3
+    release_values:
+      global:
+        nodeSelector:
+          node-type: local
+        domain: argo-cd.nkzo.ovh
+      configs:
+        params:
+          server.insecure: true
+        secret:
+          argocdServerAdminPassword: "{{ home_cluster_argocd_admin_password | password_hash('bcrypt') }}"
+        credentialTemplates:
+          https-creds:
+            url: https://github.com/ncasaux/home-lab
+            username: ncasaux
+            password: "{{ home_cluster_github_access_token }}"
+      server:
+        ingress:
+          enabled: true
