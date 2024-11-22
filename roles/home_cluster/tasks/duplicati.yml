@@ -50,7 +50,7 @@
         source:
           repoURL: https://github.com/ncasaux/home-lab
           path: roles/home_cluster/files/apps/kubernetes/duplicati
-          targetRevision: HEAD
+          targetRevision: init
         destination:
           server: https://kubernetes.default.svc
           namespace: duplicati
