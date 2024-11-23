@@ -5,12 +5,11 @@ I use my home lab mainly to run Home Assistant, but also to experiment with IaC,
 The repository is mainly composed of Ansible resources.
 
 ## Purpose
-The purpose of this repository is simply to share how I manage my home lab using IaC and GitOps. If it helps anyone to achieve similar goal, then the objective is reached! 👍
+The purpose of this repository is simply to share how I manage my home lab. If it helps anyone to achieve similar goal, then the objective is reached! 👍
 
 Your comments and suggestions are welcome!
 
-## Description
-### Architecture
+## Architecture
 My home lab is composed of 2 _logical_ components:
 1. The "Home Gateway": to manage "critical" home services like DNS, reverse proxy and certificates renewal.
 2. The "Home Cluster": to manage all other services like Home Assistant.
@@ -39,7 +38,7 @@ architecture-beta
 
 Therefore, there are 2 Ansible roles to manage them.
 
-### Repository layout
+## Repository layout
 ```
 ├─📝 inventory.yml        # Ansible inventory file
 ├─📝 home-gateway.yml     # Playbook for the home gateway
