@@ -1,6 +1,6 @@
 # 🧪 Nicolas's Home Lab
 This repository contains all the resources I use to maintain my home lab. 
-I use my home lab mainly to run Home Assistant, but also to experiment with IaC, GitOps, Kubernetes, Docker, etc...
+I use my home lab mainly to run Home Assistant, but also to experiment and learn about IaC, GitOps, Docker, Kubernetes, etc...
 
 The repository is mainly composed of Ansible resources.
 
@@ -11,7 +11,7 @@ Your comments and suggestions are welcome!
 
 ## Architecture
 My home lab is composed of 2 _logical_ components:
-1. The "Home Gateway": to manage "critical" home services like DNS, reverse proxy and certificates renewal.
+1. The "Home Gateway": to manage "critical" services like DNS, reverse proxy and certificates renewal.
 2. The "Home Cluster": to manage all other services like Home Assistant.
 
 ```mermaid
@@ -86,10 +86,10 @@ Raspberry Pi 4 Model B Rev 1.2 with:
 - [Argo CD](https://argo-cd.readthedocs.io/en/stable/) for continuous delivery
 - [NFS Subdir External Provisioner](https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner) for NFS
 - [Duplicati](https://duplicati.com/) for backups
-- [Home Assistant](https://www.home-assistant.io/) for home automation, along with
-  - [Wyoming Vosk](https://github.com/rhasspy/wyoming-vosk) for speech to text
-  - [Wyoming Piper](https://github.com/rhasspy/wyoming-piper) for text to speech
-  - [Wyoming Satellite](https://github.com/rhasspy/wyoming-satellite) for voice assist
-  - [Wyoming Porcupine1](https://github.com/rhasspy/wyoming-porcupine1) for wake word detection
+- [Home Assistant](https://www.home-assistant.io/) for home automation
+- [Wyoming Vosk](https://github.com/rhasspy/wyoming-vosk) for speech to text
+- [Wyoming Piper](https://github.com/rhasspy/wyoming-piper) for text to speech
+- [Wyoming Porcupine1](https://github.com/rhasspy/wyoming-porcupine1) for wake word detection
+- [Wyoming Satellite](https://github.com/rhasspy/wyoming-satellite) for voice assistant
 - [Kube Prometheus Stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) for monitoring
 - [Portainer](https://www.portainer.io/) for monitoring
