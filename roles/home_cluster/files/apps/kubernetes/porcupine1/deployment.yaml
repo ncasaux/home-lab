@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: porcupine1
+spec:
+  replicas: 1
+  selector:
+    nodeSelector:
+      kubernetes.io/hostname: rpi3
+  template:
+    metadata:
+      labels:
+        app: porcupine1
+    spec:
+      nodeSelector:
+        node-type: local
+      containers:
+        - name: porcupine1
+          image: rhasspy/wyoming-porcupine1:1.2.0
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "256Mi"
+              cpu: "4"
+          args: ["--uri", "tcp://0.0.0.0:10400", "--debug"]
+          ports:
+            - containerPort: 10400

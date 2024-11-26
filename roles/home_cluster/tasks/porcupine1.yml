@@ -1,0 +1,31 @@
+- name: Create Argo CD Application for Porcupine1
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: porcupine1
+        namespace: argo-cd
+      spec:
+        project: default
+        source:
+          repoURL: https://github.com/ncasaux/home-lab
+          path: roles/home_cluster/files/apps/kubernetes/porcupine1
+          targetRevision: init
+        destination:
+          server: https://kubernetes.default.svc
+          namespace: home-assistant
+        syncPolicy:
+          retry:
+            limit: 2
+            backoff:
+              duration: 5s
+              maxDuration: 3m0s
+              factor: 2
+          automated:
+            prune: false
+            selfHeal: false
+          syncOptions:
+            - CreateNamespace=false
