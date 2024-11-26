@@ -5,15 +5,15 @@ metadata:
 spec:
   replicas: 1
   selector:
-    nodeSelector:
-      kubernetes.io/hostname: rpi3
+    matchLabels:
+      app: porcupine1
   template:
     metadata:
       labels:
         app: porcupine1
     spec:
       nodeSelector:
-        node-type: local
+        kubernetes.io/hostname: rpi3
       containers:
         - name: porcupine1
           image: rhasspy/wyoming-porcupine1:1.2.0
