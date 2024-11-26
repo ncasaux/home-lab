@@ -1,6 +1,6 @@
 # 🧪 Nicolas's Home Lab
 This repository contains all the resources I use to maintain my home lab. 
-I use my home lab mainly to run Home Assistant, but also to experiment and learn about IaC, GitOps, Docker, Kubernetes, etc...
+I use my home lab mainly to run Home Assistant, but also to experiment and ultimately to learn about IaC, GitOps, Linux, Docker, Kubernetes, etc...
 
 The repository is mainly composed of Ansible resources.
 
