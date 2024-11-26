@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: porcupine1
 spec:
+  type: LoadBalancer
   ports:
     - port: 10400
   selector:
