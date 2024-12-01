@@ -54,7 +54,7 @@
         source:
           repoURL: https://github.com/ncasaux/home-lab
           path: roles/home_cluster/files/apps/kubernetes/vosk
-          targetRevision: init
+          targetRevision: main
         destination:
           server: https://kubernetes.default.svc
           namespace: home-assistant
