@@ -30,8 +30,8 @@ architecture-beta
 
   internet:R -- L:modem
   modem:R -- L:udm
-  udm:R -- L:junctionCenter
-  junctionCenter:B -- T:rpi4
+  udm:R -- L:rpi4
+  rpi4:R -- L:junctionCenter
   junctionCenter:R -- L:rpi3
   junctionCenter:T -- L:tpi2
 ```
