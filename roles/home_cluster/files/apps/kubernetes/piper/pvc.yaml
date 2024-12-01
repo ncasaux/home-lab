@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: piper
+spec:
+  accessModes:
+    - ReadWriteOnce
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: piper
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: nfs-client

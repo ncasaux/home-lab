@@ -1,0 +1,13 @@
+- name: Install Portainer Agent
+  community.docker.docker_container:
+    name: portainer_agent
+    image: portainer/agent:2.23.0
+    platform: linux/arm64
+    state: started
+    restart_policy: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+      - /:/host
+    ports:
+      - 9001:9001

@@ -1,0 +1,77 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "enabledManagers": [
+    "regex",
+    "kubernetes",
+    "ansible"
+  ],
+  "prConcurrentLimit": 20,
+  "kubernetes": {
+    "fileMatch": [
+      "^roles/home_cluster/files/apps/kubernetes/.*\\.yaml$"
+    ]
+  },
+  "ansible": {
+    "fileMatch": [
+      "^roles/home_gateway/tasks/.*\\.yml$"
+    ]
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "^roles/home_cluster/tasks/k3s.yml$"
+      ],
+      "matchStrings": [
+        "k3s_release_version:\\s*(?<currentValue>\\S+)"
+      ],
+      "depNameTemplate": "k3s",
+      "datasourceTemplate": "custom.k3s"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "^roles/home_cluster/tasks/helm.yml$"
+      ],
+      "matchStrings": [
+        "\\S*helm-diff\\S*\\n\\s*plugin_version:\\s*(?<currentValue>\\S+)"
+      ],
+      "depNameTemplate": "databus23/helm-diff",
+      "datasourceTemplate": "github-releases"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "^roles/home_cluster/tasks/helm.yml$"
+      ],
+      "matchStrings": [
+        "helm_version:\\s*(?<currentValue>\\S+)"
+      ],
+      "depNameTemplate": "helm/helm",
+      "datasourceTemplate": "github-releases"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "^roles/home_cluster/tasks/argo-cd.yml$"
+      ],
+      "matchStrings": [
+        "chart_version:\\s*(?<currentValue>\\S+)"
+      ],
+      "depNameTemplate": "argoproj/argo-helm",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^argo-cd-(?<version>.*)$"
+    }
+  ],
+  "customDatasources": {
+    "k3s": {
+      "defaultRegistryUrlTemplate": "https://update.k3s.io/v1-release/channels",
+      "transformTemplates": [
+        "{\"releases\":[{\"version\": $$.(data[id = 'stable'].latest),\"sourceUrl\":\"https://github.com/k3s-io/k3s\",\"changelogUrl\":$join([\"https://github.com/k3s-io/k3s/releases/tag/\",data[id = 'stable'].latest])}],\"sourceUrl\": \"https://github.com/k3s-io/k3s\",\"homepage\": \"https://k3s.io/\"}"
+      ]
+    }
+  }
+}

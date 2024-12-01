@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: duplicati
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: duplicati
+  template:
+    metadata:
+      labels:
+        app: duplicati
+    spec:
+      nodeSelector:
+        node-type: local
+      containers:
+        - name: duplicati
+          image: lscr.io/linuxserver/duplicati:2.0.8
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8200
+              name: web
+          volumeMounts:
+            - name: ssd
+              mountPath: /config
+              subPath: duplicati
+            - name: ssd
+              mountPath: /source
+            - name: duplicati-backups
+              mountPath: /backups
+          env:
+            - name: TZ
+              value: "Europe/Paris"
+            - name: PUID
+              value: "0"
+            - name: PGID
+              value: "0"
+      volumes:
+        - name: ssd
+          persistentVolumeClaim:
+            claimName: duplicati
+        - name: duplicati-backups
+          emptyDir: {}

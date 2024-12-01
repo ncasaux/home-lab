@@ -1,0 +1,72 @@
+- name: Create vosk directory
+  when: k3s_control_node is defined and k3s_control_node
+  ansible.builtin.file:
+    path: /mnt/ssd/vosk
+    state: directory
+    mode: "777"
+
+- name: Create persistent volume for Vosk
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: PersistentVolume
+      metadata:
+        name: vosk
+        labels:
+          app.kubernetes.io/name: vosk
+      spec:
+        storageClassName: nfs-client
+        capacity:
+          storage: 1Gi
+        accessModes:
+          - ReadWriteOnce
+        nfs:
+          server: "{{ inventory_hostname }}"
+          path: /mnt/ssd/vosk
+
+- name: Download vosk-model-small-fr
+  when: k3s_control_node is defined and k3s_control_node
+  ansible.builtin.get_url:
+    url: https://huggingface.co/rhasspy/vosk-models/resolve/main/fr/vosk-model-small-fr-0.22.zip
+    dest: /mnt/ssd/vosk/vosk-model-small-fr-0.22.zip
+    mode: "0440"
+
+- name: Extract vosk-model-small-fr
+  when: k3s_control_node is defined and k3s_control_node
+  ansible.builtin.unarchive:
+    src: /mnt/ssd/vosk/vosk-model-small-fr-0.22.zip
+    dest: /mnt/ssd/vosk/
+    remote_src: true
+
+- name: Create Argo CD Application for Vosk
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: vosk
+        namespace: argo-cd
+      spec:
+        project: default
+        source:
+          repoURL: https://github.com/ncasaux/home-lab
+          path: roles/home_cluster/files/apps/kubernetes/vosk
+          targetRevision: init
+        destination:
+          server: https://kubernetes.default.svc
+          namespace: home-assistant
+        syncPolicy:
+          retry:
+            limit: 2
+            backoff:
+              duration: 5s
+              maxDuration: 3m0s
+              factor: 2
+          automated:
+            prune: false
+            selfHeal: false
+          syncOptions:
+            - CreateNamespace=false

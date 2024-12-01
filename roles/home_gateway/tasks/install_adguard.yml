@@ -1,0 +1,34 @@
+- name: Create AdGuard configuration directory
+  ansible.builtin.file:
+    path: "{{ '/home/' + ansible_user + '/adguard/conf' }}"
+    state: directory
+    mode: "755"
+
+- name: Copy AdGuard configuration file
+  ansible.builtin.template:
+    src: "{{ role_path + '/templates/adguardhome.j2.yaml' }}"
+    dest: "{{ '/home/' + ansible_user + '/adguard/conf/AdGuardHome.yaml' }}"
+    group: "{{ ansible_user }}"
+    owner: "{{ ansible_user }}"
+    mode: "644"
+
+- name: Create AdGuard Docker volume
+  community.docker.docker_volume:
+    name: adguard-data
+
+- name: Install AdGuard
+  community.docker.docker_container:
+    user: root
+    name: adguard
+    image: adguard/adguardhome:v0.107.54
+    state: started
+    restart: true
+    restart_policy: unless-stopped
+    volumes:
+      - "{{ '/home/' + ansible_user + '/adguard/conf' }}:/opt/adguardhome/conf"
+      - "adguard-data:/opt/adguardhome/work"
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8081:80"
+      - "3000:3000"

@@ -1,0 +1,28 @@
+# Inspired from https://stackoverflow.com/questions/61972815/ansible-modify-cmdline-txt-on-raspberry-pi
+- name: Read cmdline.txt
+  register: result_cmdline
+  ansible.builtin.slurp:
+    src: "{{ cmdline_txt_path }}"
+
+- name: Generate regular expression for existing arguments
+  ansible.builtin.set_fact:
+    regex_existing: '{{ "\b" + key | string + "(?:=" + ("[\w]*" if update | default(true) else value | string) + ")?(?![\w=])" }}'
+    key_value_pair: '{{ "" if remove | default(false) else ("" + key | string + (("=" + value | string) if value is defined else "")) }}'
+
+- name: Generate regular expression for new arguments
+  ansible.builtin.set_fact:
+    regex_add_missing: '{{ "^((?!(?:.|\n)*" + regex_existing + ")((?:.|\n)*))$" }}'
+
+- name: Update cmdline.txt
+  become: true
+  notify:
+    - Restart Raspberry Pi
+  ansible.builtin.copy:
+    content: '{{ result_cmdline.content
+     | b64decode
+     | regex_replace(regex_existing, key_value_pair)
+     | regex_replace(regex_add_missing, key_value_pair + ("\1" if remove | default(false) else " \1"))
+     | regex_replace("\s+", " ")
+     | trim }}'
+    dest: "{{ cmdline_txt_path }}"
+    mode: preserve

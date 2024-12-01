@@ -1,0 +1,14 @@
+- name: Install Node Exporter
+  community.docker.docker_container:
+    name: node-exporter
+    image: prom/node-exporter:v1.8.2
+    platform: linux/arm64
+    state: started
+    restart_policy: unless-stopped
+    network_mode: host
+    pid_mode: host
+    volumes:
+      - "/:/host:ro,rslave"
+    command:
+      - --path.rootfs=/host
+      - --collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc|run)($|/)

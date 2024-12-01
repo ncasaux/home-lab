@@ -1,0 +1,59 @@
+ungrouped:
+  hosts:
+    udm:
+      ansible_host: 192.168.1.1
+    rpi4:
+      ansible_host: 192.168.1.10
+      ansible_user: "{{ inventory_hosts.rpi4.user }}"
+      ansible_password: "{{ inventory_hosts.rpi4.password }}"
+    tpi2:
+      ansible_host: 192.168.1.100
+    rpi3:
+      ansible_host: 192.168.1.105
+      ansible_user: "{{ inventory_hosts.rpi3.user }}"
+      ansible_password: "{{ inventory_hosts.rpi3.password }}"
+
+tpi2_rpi_cm4:
+  hosts:
+    rpi-cm4-1:
+      ansible_host: 192.168.1.101
+      ansible_user: "{{ inventory_hosts.rpi_cm4_1.user }}"
+      ansible_password: "{{ inventory_hosts.rpi_cm4_1.password }}"
+      node_number: 1
+    rpi-cm4-2:
+      ansible_host: 192.168.1.102
+      ansible_user: "{{ inventory_hosts.rpi_cm4_2.user }}"
+      ansible_password: "{{ inventory_hosts.rpi_cm4_2.password }}"
+      node_number: 2
+    rpi-cm4-3:
+      ansible_host: 192.168.1.103
+      ansible_user: "{{ inventory_hosts.rpi_cm4_3.user }}"
+      ansible_password: "{{ inventory_hosts.rpi_cm4_3.password }}"
+      node_number: 3
+    rpi-cm4-4:
+      ansible_host: 192.168.1.104
+      ansible_user: "{{ inventory_hosts.rpi_cm4_4.user }}"
+      ansible_password: "{{ inventory_hosts.rpi_cm4_4.password }}"
+      node_number: 4
+
+k3s_cluster_server:
+  hosts:
+    rpi-cm4-1:
+      k3s_control_node: true
+      node_type: local
+
+k3s_cluster_agent:
+  hosts:
+    rpi-cm4-2:
+      node_type: local
+    rpi-cm4-3:
+      node_type: local
+    rpi-cm4-4:
+      node_type: local
+    rpi3:
+      node_type: remote
+
+k3s_cluster:
+  children:
+    k3s_cluster_server:
+    k3s_cluster_agent:

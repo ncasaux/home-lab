@@ -1,0 +1,96 @@
+- name: Create observability namespace
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: observability
+
+- name: Create prometheus directory
+  when: k3s_control_node is defined and k3s_control_node
+  ansible.builtin.file:
+    path: /mnt/ssd/prometheus
+    state: directory
+    mode: "777"
+
+- name: Create persistent volume for Prometheus
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: PersistentVolume
+      metadata:
+        name: prometheus
+        labels:
+          app.kubernetes.io/name: prometheus
+      spec:
+        storageClassName: nfs-client
+        capacity:
+          storage: 20Gi
+        accessModes:
+          - ReadWriteOnce
+        nfs:
+          server: "{{ inventory_hostname }}"
+          path: /mnt/ssd/prometheus
+
+- name: Create Kubernetes secrets for Home Assistant Prometheus endpoint token
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: home-assistant-prometheus-token
+        namespace: observability
+      stringData:
+        token: "{{ home_cluster_home_assistant_prometheus_token }}"
+
+- name: Create grafana directory
+  when: k3s_control_node is defined and k3s_control_node
+  ansible.builtin.file:
+    path: /mnt/ssd/grafana
+    state: directory
+    mode: "777"
+
+- name: Create persistent volume for Grafana
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: PersistentVolume
+      metadata:
+        name: grafana
+        labels:
+          app.kubernetes.io/name: grafana
+      spec:
+        storageClassName: nfs-client
+        capacity:
+          storage: 10Gi
+        accessModes:
+          - ReadWriteOnce
+        nfs:
+          server: "{{ inventory_hostname }}"
+          path: /mnt/ssd/grafana
+
+- name: Create Kubernetes secrets for Grafana
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: grafana-credentials
+        namespace: observability
+      stringData:
+        admin-user: admin
+        admin-password: "{{ home_cluster_grafana_admin_password }}"
+
+- name: Create Argo CD Application
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'files/apps/argo-cd/kube-prometheus-stack.yaml') | from_yaml }}"

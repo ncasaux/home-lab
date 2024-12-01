@@ -1,0 +1,30 @@
+- name: Create HAProxy configuration directory
+  ansible.builtin.file:
+    path: "{{ '/home/' + ansible_user + '/haproxy' }}"
+    state: directory
+    mode: "755"
+
+- name: Copy HAProxy configuration file
+  ansible.builtin.template:
+    src: "{{ role_path + '/templates/haproxy.j2.cfg' }}"
+    dest: "{{ '/home/' + ansible_user + '/haproxy/haproxy.cfg' }}"
+    group: "{{ ansible_user }}"
+    owner: "{{ ansible_user }}"
+    mode: "644"
+
+- name: Install HAProxy
+  community.docker.docker_container:
+    user: root
+    name: haproxy
+    image: haproxy:3.0.6
+    state: started
+    restart: true
+    restart_policy: unless-stopped
+    volumes:
+      - "{{ '/home/' + ansible_user + '/haproxy' }}:/usr/local/etc/haproxy:ro"
+      - /etc/letsencrypt/live/nkzo.ovh/fullchain.pem:/etc/letsencrypt/live/nkzo.ovh/fullchain.pem:ro
+      - /etc/letsencrypt/live/nkzo.ovh/privkey.pem:/etc/letsencrypt/live/nkzo.ovh/fullchain.pem.key:ro
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8404:8404"
