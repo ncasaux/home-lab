@@ -1,10 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
   "enabledManagers": [
-    "regex",
+    "custom.regex",
     "kubernetes",
     "ansible"
   ],
