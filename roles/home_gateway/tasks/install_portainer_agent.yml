@@ -1,7 +1,7 @@
 - name: Install Portainer Agent
   community.docker.docker_container:
     name: portainer_agent
-    image: portainer/agent:2.24.1
+    image: portainer/agent:2.25.0
     platform: linux/arm64
     state: started
     restart_policy: unless-stopped
