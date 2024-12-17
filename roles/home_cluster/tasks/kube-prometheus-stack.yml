@@ -89,8 +89,98 @@
         admin-user: admin
         admin-password: "{{ home_cluster_grafana_admin_password }}"
 
-- name: Create Argo CD Application
+- name: Create Argo CD Application for Kube Prometheus Stack
   when: k3s_control_node is defined and k3s_control_node
   kubernetes.core.k8s:
     state: present
-    definition: "{{ lookup('file', 'files/apps/argo-cd/kube-prometheus-stack.yaml') | from_yaml }}"
+    definition:
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: kube-prometheus-stack
+        namespace: argo-cd
+      spec:
+        project: default
+        source:
+          repoURL: https://prometheus-community.github.io/helm-charts
+          chart: kube-prometheus-stack
+          targetRevision: '*'
+          helm:
+            valuesObject:
+              prometheus:
+                prometheusSpec:
+                  nodeSelector:
+                    node-type: local
+                  persistentVolumeClaimRetentionPolicy:
+                    whenDeleted: Delete
+                  storageSpec:
+                    volumeClaimTemplate:
+                      spec:
+                        storageClassName: nfs-client
+                        selector:
+                          matchLabels:
+                            app.kubernetes.io/name: prometheus
+                        resources:
+                          requests:
+                            storage: 20Gi
+                  additionalScrapeConfigs:
+                    - job_name: home-assistant
+                      scrape_interval: 60s
+                      metrics_path: /api/prometheus
+                      authorization:
+                        credentials_file: /etc/home-assistant-prometheus-token/token
+                      static_configs:
+                        - targets: ["home-assistant.home-assistant:8080"]
+                  volumeMounts:
+                    - name: home-assistant-prometheus-token
+                      mountPath: /etc/home-assistant-prometheus-token
+                      readOnly: true
+                  volumes:
+                    - name: home-assistant-prometheus-token
+                      secret:
+                        secretName: home-assistant-prometheus-token
+                        items:
+                          - key: token
+                            path: token
+              alertmanager:
+                enabled: false
+              grafana:
+                nodeSelector:
+                  node-type: local
+                persistence:
+                  enabled: true
+                  storageClassName: nfs-client
+                  selectorLabels:
+                    app.kubernetes.io/name: grafana
+                admin:
+                  existingSecret: grafana-credentials
+                sidecar:
+                  datasources:
+                    alertmanager:
+                      enabled: false
+                ingress:
+                  enabled: true
+                  hosts:
+                    - grafana.nkzo.ovh
+                defaultDashboardsEnabled: false
+                defaultDashboardsTimezone: Europe/Paris
+              prometheus-node-exporter:
+                extraArgs:
+                  - --collector.filesystem.mount-points-exclude=^/(run|dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+                  - --collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
+        destination:
+          server: https://kubernetes.default.svc
+          namespace: observability
+        syncPolicy:
+          retry:
+            limit: 2
+            backoff:
+              duration: 5s
+              maxDuration: 3m0s
+              factor: 2
+          automated:
+            prune: false
+            selfHeal: false
+          syncOptions:
+            - CreateNamespace=false
+            - ServerSideApply=true

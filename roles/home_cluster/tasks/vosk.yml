@@ -53,7 +53,7 @@
         project: default
         source:
           repoURL: https://github.com/ncasaux/home-lab
-          path: roles/home_cluster/files/apps/kubernetes/vosk
+          path: roles/home_cluster/files/kubernetes/vosk
           targetRevision: main
         destination:
           server: https://kubernetes.default.svc
