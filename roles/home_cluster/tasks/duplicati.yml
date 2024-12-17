@@ -49,7 +49,7 @@
         project: default
         source:
           repoURL: https://github.com/ncasaux/home-lab
-          path: roles/home_cluster/files/apps/kubernetes/duplicati
+          path: roles/home_cluster/files/kubernetes/duplicati
           targetRevision: main
         destination:
           server: https://kubernetes.default.svc
