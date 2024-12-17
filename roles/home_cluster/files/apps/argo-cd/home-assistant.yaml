@@ -35,9 +35,15 @@ spec:
               path: /dev/serial/by-id/usb-RFXCOM_RFXtrx433XL_DO3HR29T-if00-port0
               type: CharDevice
             name: rfxcom
+          - hostPath:
+              path: /dev/serial/by-id/usb-Itead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_V2_6c6a3cc274d9ee11b056b54c37b89984-if00-port0
+              type: CharDevice
+            name: sonoff-zigbee
         additionalMounts:
           - mountPath: /dev/ttyUSB0
             name: rfxcom
+          - mountPath: /dev/ttyUSB1
+            name: sonoff-zigbee
         initContainers:
           - name: init-hacs
             image: bash
