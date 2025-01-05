@@ -1,0 +1,58 @@
+- name: Create music-assistant directory
+  when: k3s_control_node is defined and k3s_control_node
+  ansible.builtin.file:
+    path: /mnt/ssd/music-assistant
+    state: directory
+    mode: "777"
+
+- name: Create persistent volume for Music Assistant
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: PersistentVolume
+      metadata:
+        name: music-assistant
+        labels:
+          app.kubernetes.io/name: music-assistant
+      spec:
+        storageClassName: nfs-client
+        capacity:
+          storage: 5Gi
+        accessModes:
+          - ReadWriteOnce
+        nfs:
+          server: "{{ inventory_hostname }}"
+          path: /mnt/ssd/music-assistant
+
+- name: Create Argo CD Application for Music Assistant
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: music-assistant
+        namespace: argo-cd
+      spec:
+        project: default
+        source:
+          repoURL: https://github.com/ncasaux/home-lab
+          path: roles/home_cluster/files/kubernetes/music-assistant
+          targetRevision: music-assistant
+        destination:
+          server: https://kubernetes.default.svc
+          namespace: home-assistant
+        syncPolicy:
+          retry:
+            limit: 2
+            backoff:
+              duration: 5s
+              maxDuration: 3m0s
+              factor: 2
+          automated:
+            prune: false
+            selfHeal: false
+          syncOptions:
+            - CreateNamespace=false
