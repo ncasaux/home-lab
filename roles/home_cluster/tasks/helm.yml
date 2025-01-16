@@ -3,7 +3,7 @@
   vars:
     helm_platform: linux
     helm_arch: arm64
-    helm_version: v3.16.4
+    helm_version: v3.17.0
   ansible.builtin.import_role:
     name: geerlingguy.helm
 
