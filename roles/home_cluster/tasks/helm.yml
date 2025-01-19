@@ -17,5 +17,5 @@
   when: k3s_control_node is defined and k3s_control_node
   kubernetes.core.helm_plugin:
     plugin_path: "https://github.com/databus23/helm-diff"
-    plugin_version: v3.9.13
+    plugin_version: v3.9.14
     state: present
