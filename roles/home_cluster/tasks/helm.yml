@@ -13,9 +13,15 @@
   ansible.builtin.import_role:
     name: geerlingguy.git
 
+- name: Remove Helm Diff on K3s server node
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.helm_plugin:
+    plugin_name: diff
+    state: absent
+
 - name: Install Helm Diff on K3s server node
   when: k3s_control_node is defined and k3s_control_node
   kubernetes.core.helm_plugin:
-    plugin_path: "https://github.com/databus23/helm-diff"
+    plugin_path: https://github.com/databus23/helm-diff
     plugin_version: v3.9.14
     state: present
