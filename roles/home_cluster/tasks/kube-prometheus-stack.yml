@@ -152,6 +152,8 @@
                   storageClassName: nfs-client
                   selectorLabels:
                     app.kubernetes.io/name: grafana
+                initChownData:
+                  enabled: false
                 admin:
                   existingSecret: grafana-credentials
                 sidecar:
