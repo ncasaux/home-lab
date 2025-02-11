@@ -47,6 +47,7 @@
         namespace: duplicati
       stringData:
         admin-password: "{{ home_cluster_duplicati_admin_password }}"
+        encryption-key: "{{ home_cluster_duplicati_encryption_key }}"
 
 - name: Create Argo CD Application for Duplicati
   when: k3s_control_node is defined and k3s_control_node

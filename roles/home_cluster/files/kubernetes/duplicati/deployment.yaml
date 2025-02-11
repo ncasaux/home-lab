@@ -38,6 +38,11 @@ spec:
                 secretKeyRef:
                   name: duplicati-credentials
                   key: admin-password
+            - name: SETTINGS_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: duplicati-credentials
+                  key: encryption-key
             - name: TZ
               value: "Europe/Paris"
             - name: PUID
