@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: duplicati
+spec:
+  rules:
+    - host: duplicati.nkzo.ovh
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: duplicati
+                port:
+                  number: 8200
