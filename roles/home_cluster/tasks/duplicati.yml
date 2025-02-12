@@ -64,7 +64,7 @@
         source:
           repoURL: https://github.com/ncasaux/home-lab
           path: roles/home_cluster/files/kubernetes/duplicati
-          targetRevision: fix-duplicati-install
+          targetRevision: main
         destination:
           server: https://kubernetes.default.svc
           namespace: duplicati
