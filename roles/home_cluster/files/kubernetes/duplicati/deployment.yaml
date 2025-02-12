@@ -30,18 +30,24 @@ spec:
               subPath: duplicati
             - name: ssd
               mountPath: /source
-            - name: duplicati-backups
-              mountPath: /backups
           env:
+            - name: DUPLICATI__WEBSERVICE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: duplicati-credentials
+                  key: admin-password
+            - name: SETTINGS_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: duplicati-credentials
+                  key: encryption-key
             - name: TZ
               value: "Europe/Paris"
             - name: PUID
-              value: "0"
+              value: "1000"
             - name: PGID
-              value: "0"
+              value: "1000"
       volumes:
         - name: ssd
           persistentVolumeClaim:
             claimName: duplicati
-        - name: duplicati-backups
-          emptyDir: {}

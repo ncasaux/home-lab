@@ -33,6 +33,7 @@
           - turingpi2.nkzo.ovh
           - home-assistant.nkzo.ovh
           - portainer.nkzo.ovh
+          - duplicati.nkzo.ovh
   ansible.builtin.import_role:
     name: geerlingguy.certbot
 

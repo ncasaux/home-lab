@@ -35,6 +35,20 @@
           server: "{{ inventory_hostname }}"
           path: /mnt/ssd
 
+- name: Create Kubernetes secrets for Duplicati
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: duplicati-credentials
+        namespace: duplicati
+      stringData:
+        admin-password: "{{ home_cluster_duplicati_admin_password }}"
+        encryption-key: "{{ home_cluster_duplicati_encryption_key }}"
+
 - name: Create Argo CD Application for Duplicati
   when: k3s_control_node is defined and k3s_control_node
   kubernetes.core.k8s:
