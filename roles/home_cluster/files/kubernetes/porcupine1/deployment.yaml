@@ -19,10 +19,10 @@ spec:
           image: rhasspy/wyoming-porcupine1:1.2.0
           resources:
             requests:
-              memory: "256Mi"
+              memory: "128Mi"
               cpu: "500m"
             limits:
-              memory: "256Mi"
+              memory: "128Mi"
               cpu: "4"
           args: ["--uri", "tcp://0.0.0.0:10400", "--debug"]
           ports:
