@@ -18,9 +18,12 @@ spec:
         - name: duplicati
           image: lscr.io/linuxserver/duplicati:2.1.0
           resources:
-            limits:
-              memory: "256Mi"
+            requests:
+              memory: "1Gi"
               cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "4"
           ports:
             - containerPort: 8200
               name: web
