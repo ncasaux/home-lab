@@ -35,6 +35,39 @@
           server: "{{ inventory_hostname }}"
           path: /mnt/ssd/home-assistant
 
+- name: Create ingress for Home Assistant
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Ingress
+      metadata:
+        name: home-assistant
+        namespace: home-assistant
+        labels:
+          app.kubernetes.io/name: home-assistant
+      spec:
+        rules:
+          - host: home-assistant.nkzo.ovh
+            http:
+              paths:
+                - path: /
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: home-assistant
+                      port:
+                        name: http
+          - http:
+              paths:
+                - path: /notify
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: dlna
+                      port:
+                        name: dlna
+
 - name: Create Argo CD Application for Home Assistant
   when: k3s_control_node is defined and k3s_control_node
   kubernetes.core.k8s:
@@ -66,12 +99,7 @@
                   app.kubernetes.io/name: home-assistant
                 size: 5Gi
               ingress:
-                enabled: true
-                hosts:
-                  - host: home-assistant.nkzo.ovh
-                    paths:
-                      - path: /
-                        pathType: Prefix
+                external: true
               additionalVolumes:
                 - hostPath:
                     path: /dev/serial/by-id/usb-RFXCOM_RFXtrx433XL_DO3HR29T-if00-port0
