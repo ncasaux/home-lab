@@ -19,7 +19,7 @@
 - name: Install Prometheus
   community.docker.docker_container:
     name: prometheus
-    image: prom/prometheus:v3.2.0
+    image: prom/prometheus:v3.2.1
     platform: linux/arm64
     state: started
     restart_policy: unless-stopped
