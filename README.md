@@ -59,7 +59,7 @@ Raspberry Pi 4 Model B Rev 1.2 with:
   - GeeekPi Aluminum Case with Fan
 
 ### Software
-- [AdGuard](https://adguard.com/]) for DNS
+- [AdGuard](https://adguard.com/) for DNS
 - [HAProxy](https://www.haproxy.org/) for reverse proxy
 - [Certbot](https://certbot.eff.org/) for certificates renewal
 - [Prometheus](https://prometheus.io/) for monitoring
