@@ -1,7 +1,7 @@
 - name: Configure PoE+ HAT fan speeds
   become: true
   ansible.builtin.blockinfile:
-    path: /boot/config.txt
+    path: /boot/firmware/config.txt
     block: |
       # PoE+ Hat Fan Speeds
       dtparam=poe_fan_temp0=60000
