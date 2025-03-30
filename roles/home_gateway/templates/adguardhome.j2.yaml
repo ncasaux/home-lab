@@ -153,6 +153,8 @@ filtering:
       answer: "{{ hostvars['rpi3'].ansible_host }}"
     - domain: rpi4
       answer: "{{ hostvars['rpi4'].ansible_host }}"
+    - domain: rpi5
+      answer: "{{ hostvars['rpi5'].ansible_host }}"
     - domain: '*.nkzo.ovh'
       answer: "{{ hostvars['rpi4'].ansible_host }}"
   safebrowsing_cache_size: 1048576
