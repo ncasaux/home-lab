@@ -14,6 +14,8 @@ spec:
                 name: music-assistant
                 port:
                   name: webserver
+    - http:
+        paths:
           - path: /flow
             pathType: Prefix
             backend:
