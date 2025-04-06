@@ -3,9 +3,7 @@ kind: Service
 metadata:
   name: duplicati
 spec:
+  ports:
+    - port: 8200
   selector:
     app: duplicati
-  ports:
-    - protocol: TCP
-      port: 8200
-      targetPort: 8200
