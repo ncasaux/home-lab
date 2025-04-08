@@ -1,7 +1,7 @@
 - name: Install cAdvisor
   community.docker.docker_container:
     name: cadvisor
-    image: gcr.io/cadvisor/cadvisor:v0.51.0
+    image: gcr.io/cadvisor/cadvisor:v0.52.1
     platform: linux/arm64
     state: started
     restart_policy: unless-stopped
