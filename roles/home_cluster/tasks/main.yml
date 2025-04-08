@@ -55,6 +55,10 @@
   tags: porcupine1
   ansible.builtin.import_tasks: porcupine1.yml
 
+- name: Install Music Assistant
+  tags: music-assistant
+  ansible.builtin.import_tasks: music-assistant.yml
+
 - name: Install Kube Prometheus Stack
   tags: monitoring
   ansible.builtin.import_tasks: kube-prometheus-stack.yml
