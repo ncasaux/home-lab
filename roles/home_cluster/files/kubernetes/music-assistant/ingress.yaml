@@ -23,3 +23,10 @@ spec:
                 name: music-assistant
                 port:
                   name: streamserver
+          - path: /callback
+            pathType: Prefix
+            backend:
+              service:
+                name: music-assistant
+                port:
+                  name: streamserver
