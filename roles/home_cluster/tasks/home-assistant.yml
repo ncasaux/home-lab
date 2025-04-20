@@ -132,10 +132,10 @@
                       name: home-assistant
               resources:
                 requests:
-                  memory: "1G"
+                  memory: "1Gi"
                   cpu: "1"
                 limits:
-                  memory: "2G"
+                  memory: "2Gi"
                   cpu: "4"
         destination:
           server: https://kubernetes.default.svc

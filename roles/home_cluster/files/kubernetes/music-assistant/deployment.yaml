@@ -19,10 +19,10 @@ spec:
           image: ghcr.io/music-assistant/server:2.5.0
           resources:
             requests:
-              memory: "2Gi"
+              memory: "1Gi"
               cpu: "1"
             limits:
-              memory: "4Gi"
+              memory: "2Gi"
               cpu: "4"
           securityContext:
             capabilities:
