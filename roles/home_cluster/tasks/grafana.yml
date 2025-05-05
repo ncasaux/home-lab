@@ -21,6 +21,18 @@
     ds_type: prometheus
     ds_url: "http://{{ hostvars['rpi4'].ansible_host }}:9090"
 
+- name: Create Prometheus RPi5 datasource
+  delegate_to: localhost
+  run_once: true
+  community.grafana.grafana_datasource:
+    grafana_url: https://grafana.nkzo.ovh
+    grafana_user: admin
+    grafana_password: "{{ home_cluster_grafana_admin_password }}"
+    name: Prometheus RPi5
+    uid: prometheus-rpi5
+    ds_type: prometheus
+    ds_url: "http://{{ hostvars['rpi5'].ansible_host }}:9090"
+
 - name: Import node-exporter-full dashboard
   delegate_to: localhost
   run_once: true
