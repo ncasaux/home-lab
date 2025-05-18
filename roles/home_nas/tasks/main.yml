@@ -4,7 +4,21 @@
     path: /boot/firmware/config.txt
     block: |
       # PoE M.2 HAT+ Fan Speeds
-      dtparam=fan_temp0=60000
-      dtparam=fan_temp1=65000
-      dtparam=fan_temp2=70000
-      dtparam=fan_temp3=75000
+      dtparam=fan_temp0=64000
+      dtparam=fan_temp1=68000
+      dtparam=fan_temp2=72000
+      dtparam=fan_temp3=76000
+
+- name: Install Node Exporter
+  ansible.builtin.import_role:
+    name: prometheus.prometheus.node_exporter
+
+- name: Install Prometheus
+  vars:
+    prometheus_scrape_configs:
+      - job_name: 'node-exporter'
+        scrape_interval: 15s
+        static_configs:
+          - targets: ["{{ hostvars['rpi5'].ansible_host }}:9100"]
+  ansible.builtin.import_role:
+    name: prometheus.prometheus.prometheus
