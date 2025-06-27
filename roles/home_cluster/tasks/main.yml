@@ -60,8 +60,8 @@
   ansible.builtin.import_tasks: music-assistant.yml
 
 - name: Install Kube Prometheus Stack
-  tags: monitoring
-  ansible.builtin.import_tasks: kube-prometheus-stack.yml
+  tags: kube_prometheus_stack
+  ansible.builtin.import_tasks: kube_prometheus_stack.yml
 
 - name: Configure Grafana and import dashboards
   tags: grafana
