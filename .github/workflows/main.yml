@@ -1,0 +1,18 @@
+name: Run Ansible on Renovate AdGuardHome Updates
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'renovate/adguard-adguardhome-0.*'
+
+jobs:
+  run-ansible-playbook:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Ansible Playbook
+        run: ansible-playbook home-gateway.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "adguard"
