@@ -17,8 +17,15 @@
       log-opts:
         max-size: "10m"
         max-file: "5"
+  tags: docker
   ansible.builtin.import_role:
     name: geerlingguy.docker
+
+- name: Install Ansible
+  become: true
+  tags: ansible
+  ansible.builtin.import_role:
+    name: geerlingguy.ansible
 
 - name: Creates a cron job to prune Docker resources
   ansible.builtin.cron:
@@ -54,3 +61,7 @@
 - name: Install Portainer Agent
   tags: portainer
   ansible.builtin.import_tasks: install_portainer_agent.yml
+
+- name: Install GitHub Actions Runner
+  tags: github_actions_runner
+  ansible.builtin.import_tasks: install_github_actions_runner.yml
