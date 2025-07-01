@@ -1,17 +1,20 @@
 - name: Create a public and a private SSH key for current user on control node
   delegate_to: localhost
   run_once: true
+  tags: always
   ansible.builtin.user:
     name: "{{ lookup('env', 'USER') }}"
     generate_ssh_key: true
 
 - name: Add SSH public key of current user to authorized keys on managed nodes
+  tags: always
   ansible.posix.authorized_key:
     user: "{{ ansible_user }}"
     state: present
     key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
 
 - name: Add managed nodes SSH keys to known_hosts on control node
+  tags: always
   delegate_to: localhost
   throttle: 1
   ansible.builtin.known_hosts:
