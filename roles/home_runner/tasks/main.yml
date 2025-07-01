@@ -1,0 +1,46 @@
+- name: Create Github Actions Runner configuration directory
+  ansible.builtin.file:
+    path: "{{ '/home/' + ansible_user + '/github_actions_runner' }}"
+    state: directory
+    mode: "755"
+
+- name: Install GitHub Actions Runner
+  become: true
+  vars:
+    github_account: ncasaux
+    github_repo: home-lab
+    runner_user: "{{ hostvars[inventory_hostname].ansible_user }}"
+    access_token: "{{ home_runner_github_access_token }}"
+  ansible.builtin.import_role:
+    name: ansible-github_actions_runner
+
+- name: Install Ansible
+  become: true
+  ansible.builtin.import_role:
+    name: geerlingguy.ansible
+
+- name: Install sshpass
+  become: true
+  ansible.builtin.package:
+    name: sshpass
+    state: present
+
+- name: Install role geerlingguy.docker
+  community.general.ansible_galaxy_install:
+    type: role
+    name: geerlingguy.docker
+
+- name: Install role geerlingguy.ansible
+  community.general.ansible_galaxy_install:
+    type: role
+    name: geerlingguy.ansible
+
+- name: Install role geerlingguy.certbot
+  community.general.ansible_galaxy_install:
+    type: role
+    name: geerlingguy.certbot
+
+- name: Install role ansible-github_actions_runner
+  changed_when: false
+  ansible.builtin.command: >
+    ansible-galaxy role install git+https://github.com/MonolithProjects/ansible-github_actions_runner.git,1.21.1

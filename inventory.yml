@@ -54,8 +54,6 @@ k3s_cluster_agent:
       node_type: local
     rpi-cm4-4:
       node_type: local
-    rpi3:
-      node_type: remote
 
 k3s_cluster:
   children:
