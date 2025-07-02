@@ -1,4 +1,4 @@
-name: Run Ansible Playbook to update Home Cluster Helm
+name: Update Home Gateway HAProxy
 
 on:
   workflow_dispatch:

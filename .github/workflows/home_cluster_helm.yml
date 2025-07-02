@@ -1,11 +1,11 @@
-name: Run Ansible Playbook to update Home Gateway HAProxy
+name: Update Home Cluster Helm
 
 on:
   workflow_dispatch:
   push:
     branches: main
     paths:
-      - roles/home_gateway/tasks/install_haproxy.yml
+      - roles/home_cluster/tasks/helm.yml
 
 jobs:
   run-ansible-playbook:
@@ -16,7 +16,7 @@ jobs:
 
       - name: Run Ansible tasks
         run: |
-          ansible-playbook home-gateway.yml \
+          ansible-playbook home-cluster.yml \
             -i inventory.yml \
             --extra-vars "@~/github_actions_runner/ansible-passwords.yml" \
-            --tags "haproxy"
+            --tags "helm"
