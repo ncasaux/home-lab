@@ -2,7 +2,7 @@ name: Run Ansible Playbook to update the Home Lab
 
 on:
   workflow_dispatch:
-  pull_request:
+  push:
     branches: main
 
 jobs:
