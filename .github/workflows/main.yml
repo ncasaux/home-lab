@@ -6,6 +6,7 @@ on:
     branches: main
     paths:
       - roles/home_gateway/**
+      - roles/home_cluster/**
 
 jobs:
   run-ansible-playbook:
@@ -14,18 +15,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run Home Gateway HAProxy Ansible Playbook
+      - name: Run Home Gateway HAProxy Ansible tasks
         if: startsWith(github.ref_name, 'renovate/haproxy-3.')
         run: ansible-playbook home-gateway.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "haproxy"
 
-      - name: Run Home Gateway AdGuard Home Ansible Playbook
+      - name: Run Home Gateway AdGuard Home Ansible tasks
         if: startsWith(github.ref_name, 'renovate/adguard-adguardhome-0.')
         run: ansible-playbook home-gateway.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "adguard"
 
-      - name: Run Home Gateway Portainer Agent Ansible Playbook
+      - name: Run Home Gateway Portainer Agent Ansible tasks
         if: startsWith(github.ref_name, 'renovate/portainer-agent-2.')
         run: ansible-playbook home-gateway.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "portainer"
 
-      - name: Run Home Gateway Prometheus Ansible Playbook
+      - name: Run Home Gateway Prometheus Ansible tasks
         if: startsWith(github.ref_name, 'renovate/prom-prometheus-3.')
         run: ansible-playbook home-gateway.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "prometheus"
+
+      - name: Run Home Cluster Music Assistant Ansible tasks
+        if: startsWith(github.ref_name, 'renovate/ghcr.io-music-assistant-server-2.')
+        run: ansible-playbook home-cluster.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "music-assistant"
