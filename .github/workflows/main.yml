@@ -1,0 +1,25 @@
+name: Run Ansible Playbook
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: main
+
+jobs:
+  run-ansible-playbook:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run HAProxy Ansible Playbook
+        if: startsWith(github.head_ref, 'renovate/haproxy-3.')
+        run: ansible-playbook home-gateway.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "haproxy"
+
+      - name: Run AdGuard Home Ansible Playbook
+        if: startsWith(github.head_ref, 'renovate/adguard-adguardhome-0.')
+        run: ansible-playbook home-gateway.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "adguard"
+
+      - name: Run Portainer Agent Ansible Playbook
+        if: startsWith(github.head_ref, 'renovate/portainer-agent-2.')
+        run: ansible-playbook home-gateway.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "portainer"
