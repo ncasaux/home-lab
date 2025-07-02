@@ -16,21 +16,25 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Home Gateway HAProxy Ansible tasks
-        if: startsWith(github.ref_name, 'renovate/haproxy-3.')
+        if: startsWith(github.head_ref, 'renovate/haproxy-3.')
         run: ansible-playbook home-gateway.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "haproxy"
 
       - name: Run Home Gateway AdGuard Home Ansible tasks
-        if: startsWith(github.ref_name, 'renovate/adguard-adguardhome-0.')
+        if: startsWith(github.head_ref, 'renovate/adguard-adguardhome-0.')
         run: ansible-playbook home-gateway.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "adguard"
 
       - name: Run Home Gateway Portainer Agent Ansible tasks
-        if: startsWith(github.ref_name, 'renovate/portainer-agent-2.')
+        if: startsWith(github.head_ref, 'renovate/portainer-agent-2.')
         run: ansible-playbook home-gateway.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "portainer"
 
       - name: Run Home Gateway Prometheus Ansible tasks
-        if: startsWith(github.ref_name, 'renovate/prom-prometheus-3.')
+        if: startsWith(github.head_ref, 'renovate/prom-prometheus-3.')
         run: ansible-playbook home-gateway.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "prometheus"
 
       - name: Run Home Cluster Music Assistant Ansible tasks
-        if: startsWith(github.ref_name, 'renovate/ghcr.io-music-assistant-server-2.')
+        if: startsWith(github.head_ref, 'renovate/ghcr.io-music-assistant-server-2.')
         run: ansible-playbook home-cluster.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "music-assistant"
+
+      - name: Run Home Cluster Helm Ansible tasks
+        if: startsWith(github.head_ref, 'renovate/helm-helm-3.') || startsWith(github.head_ref, 'renovate/databus23-helm-diff-3.')
+        run: ansible-playbook home-cluster.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "helm"
