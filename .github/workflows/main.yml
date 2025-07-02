@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
   push:
     branches: main
+    paths:
+      - roles/home_gateway/**
 
 jobs:
   run-ansible-playbook:
@@ -13,17 +15,17 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Home Gateway HAProxy Ansible Playbook
-        if: startsWith(github.head_ref, 'renovate/haproxy-3.')
+        if: startsWith(github.ref_name, 'renovate/haproxy-3.')
         run: ansible-playbook home-gateway.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "haproxy"
 
       - name: Run Home Gateway AdGuard Home Ansible Playbook
-        if: startsWith(github.head_ref, 'renovate/adguard-adguardhome-0.')
+        if: startsWith(github.ref_name, 'renovate/adguard-adguardhome-0.')
         run: ansible-playbook home-gateway.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "adguard"
 
       - name: Run Home Gateway Portainer Agent Ansible Playbook
-        if: startsWith(github.head_ref, 'renovate/portainer-agent-2.')
+        if: startsWith(github.ref_name, 'renovate/portainer-agent-2.')
         run: ansible-playbook home-gateway.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "portainer"
 
       - name: Run Home Gateway Prometheus Ansible Playbook
-        if: startsWith(github.head_ref, 'renovate/prom-prometheus-3.')
+        if: startsWith(github.ref_name, 'renovate/prom-prometheus-3.')
         run: ansible-playbook home-gateway.yml -i inventory.yml --extra-vars "@~/github_actions_runner/ansible-passwords.yml" --tags "prometheus"
