@@ -29,43 +29,51 @@
   community.general.ansible_galaxy_install:
     type: role
     name: geerlingguy.docker
+    force: true
 
 - name: Install role geerlingguy.ansible
   community.general.ansible_galaxy_install:
     type: role
     name: geerlingguy.ansible
+    force: true
 
 - name: Install role geerlingguy.certbot
   community.general.ansible_galaxy_install:
     type: role
     name: geerlingguy.certbot
+    force: true
 
 - name: Install role ansible-github_actions_runner
   changed_when: false
   ansible.builtin.command: >
-    ansible-galaxy role install git+https://github.com/MonolithProjects/ansible-github_actions_runner.git,1.21.1
+    ansible-galaxy role install git+https://github.com/MonolithProjects/ansible-github_actions_runner.git,master --force
 
 - name: Install role xanmanning.k3s
   community.general.ansible_galaxy_install:
     type: role
     name: xanmanning.k3s
+    force: true
 
 - name: Install role geerlingguy.nfs
   community.general.ansible_galaxy_install:
     type: role
     name: geerlingguy.nfs
+    force: true
 
 - name: Install role geerlingguy.pip
   community.general.ansible_galaxy_install:
     type: role
     name: geerlingguy.pip
+    force: true
 
 - name: Install role geerlingguy.helm
   community.general.ansible_galaxy_install:
     type: role
     name: geerlingguy.helm
+    force: true
 
 - name: Install role geerlingguy.git
   community.general.ansible_galaxy_install:
     type: role
     name: geerlingguy.git
+    force: true
