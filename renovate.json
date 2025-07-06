@@ -18,7 +18,7 @@
     "managerFilePatterns": [
       "^roles/home_gateway/tasks/.*\\.yml$"
     ],
-    "ignorePaths": ["^roles/home_cluster/**"]
+    "ignorePaths": ["**/home_cluster/**"]
 
   },
   "customManagers": [
