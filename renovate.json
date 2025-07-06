@@ -8,6 +8,9 @@
     "kubernetes",
     "ansible"
   ],
+  "ignoreDeps": [
+    "Deployment"
+  ],
   "prConcurrentLimit": 20,
   "kubernetes": {
     "fileMatch": [
@@ -18,8 +21,9 @@
     "managerFilePatterns": [
       "^roles/home_gateway/tasks/.*\\.yml$"
     ],
-    "ignorePaths": ["**/home_cluster/**"]
-
+    "ignorePaths": [
+      "**/home_cluster/**"
+    ]
   },
   "customManagers": [
     {
