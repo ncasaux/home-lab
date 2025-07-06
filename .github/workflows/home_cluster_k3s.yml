@@ -1,0 +1,22 @@
+name: Update Home Cluster K3s
+
+on:
+  workflow_dispatch:
+  push:
+    branches: main
+    paths:
+      - roles/home_cluster/tasks/k3s.yml
+
+jobs:
+  run-ansible-playbook:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Ansible tasks
+        run: |
+          ansible-playbook home-cluster.yml \
+            -i inventory.yml \
+            --extra-vars "@~/github_actions_runner/ansible-passwords.yml" \
+            --tags "k3s"
