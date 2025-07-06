@@ -15,6 +15,9 @@
     ]
   },
   "ansible": {
+    "managerFilePatterns": [
+      "^roles/home_gateway/tasks/.*\\.yml$"
+    ],
     "fileMatch": [
       "^roles/home_gateway/tasks/.*\\.yml$"
     ]
