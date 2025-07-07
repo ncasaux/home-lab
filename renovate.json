@@ -15,7 +15,7 @@
   "prConcurrentLimit": 20,
   "kubernetes": {
     "fileMatch": [
-      "^roles/home_cluster/files/kubernetes/**/deployment.yaml$"
+      "^roles/home_cluster/files/kubernetes/.*/deployment\\.yaml$"
     ]
   },
   "ansible": {
