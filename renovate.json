@@ -9,7 +9,8 @@
     "ansible"
   ],
   "ignoreDeps": [
-    "Deployment"
+    "Deployment",
+    "Ingress"
   ],
   "prConcurrentLimit": 20,
   "kubernetes": {
