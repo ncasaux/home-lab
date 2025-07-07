@@ -8,14 +8,10 @@
     "kubernetes",
     "ansible"
   ],
-  "ignoreDeps": [
-    "Deployment",
-    "Ingress"
-  ],
   "prConcurrentLimit": 20,
   "kubernetes": {
     "fileMatch": [
-      "^roles/home_cluster/files/kubernetes/.*\\.yaml$"
+      "^roles/home_cluster/files/kubernetes/.*\\deployment.yaml$"
     ]
   },
   "ansible": {
