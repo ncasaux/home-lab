@@ -1,7 +1,7 @@
 - name: Create a K3s cluster with a single server node
   vars:
     k3s_become: true
-    k3s_release_version: v1.32.6+k3s1
+    k3s_release_version: v1.33.3+k3s1
     k3s_server_manifests_templates:
       - "{{ ansible_parent_role_paths[0] + '/files/k3s/traefik-config.yaml' }}"
   ansible.builtin.import_role:
