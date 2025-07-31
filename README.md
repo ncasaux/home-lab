@@ -10,23 +10,26 @@ The purpose of this repository is simply to share how I manage my home lab. If i
 Your comments and suggestions are welcome!
 
 ## Architecture
-My home lab is composed of 3 _logical_ components:
+My home lab is composed of 4 _logical_ components:
 1. The "Home Gateway": to manage "critical" services like DNS, reverse proxy and certificates renewal.
 2. The "Home Cluster": to manage all other services like Home Assistant.
 3. The "Home NAS": to have a local network storage.
+4. The "Home Runner": to run GitHub Actions locally.
 
 ```mermaid
 architecture-beta
   group homecluster[Home Cluster]
   group homegateway[Home Gateway]
   group homenas[Home NAS]
+  group homerunner[Home Runner]
 
   service internet(cloud)[Internet] 
   service modem(internet)[Modem]
   service udm(internet)[Ubiquity Dream Machine Router]
   service rpi4(server)[Raspberry Pi 4] in homegateway
-  service tpi2(server)[Turing Pi 2] in homecluster
-  service rpi3(server)[Raspberry Pi 3] in homecluster
+  service tpi2(server)[Turing Pi 2]
+  service rpicm4(server)[4 x Raspberry Pi CM4] in homecluster
+  service rpi3(server)[Raspberry Pi 3] in homerunner
   service rpi5(server)[Raspberry Pi 5] in homenas
 
   junction junctionCenter
@@ -36,11 +39,12 @@ architecture-beta
   udm:R -- L:rpi4
   rpi4:R -- L:junctionCenter
   junctionCenter:R -- L:rpi3
-  junctionCenter:T -- L:tpi2
+  junctionCenter:T -- B:tpi2
   junctionCenter:B -- T:rpi5
+  rpicm4:B -- T:tpi2
 ```
 
-Therefore, there are 3 Ansible roles to manage them.
+Therefore, there are 4 Ansible roles to manage them.
 
 ## Repository layout
 ```
@@ -48,11 +52,13 @@ Therefore, there are 3 Ansible roles to manage them.
 ├─📝 home-gateway.yml     # Playbook for the home gateway
 ├─📝 home-cluster.yml     # Playbook for the home cluster
 ├─📝 home-nas.yml         # Playbook for the home NAS
+├─📝 home-runner.yml      # Playbook for the home runner
 ├─📝 renovate.json        # Renovate configuration file
 └─📁 roles                # Ansible roles
   ├─📁 home_gateway       # Role for the home gateway
   ├─📁 home_cluster       # Role for the home cluster
   ├─📁 home_nas           # Role for the home NAS
+  ├─📁 home_runner        # Role for the home runner
   ├─📁 configure_ssh      # Role to configure SSH on control and managed nodes
   ├─📁 rpi_cgroupmemory   # Role to enable cgroup settings
   └─📁 rpi_upgrade        # Role to update and upgrade packages
@@ -75,16 +81,12 @@ Raspberry Pi 4 Model B Rev 1.2 with:
 
 ## Home Cluster
 ### Hardware
-  - [Turing Pi 2.4](https://turingpi.com/) board with:
-    - 4 Raspberry Pi Compute Module 4, 8 GB RAM, 32 GB eMMC
-    - 4 IBest Aluminum Heatsink
-    - [SilverStone Milo 10 mini ITX Case](https://www.silverstonetek.com/en/product/info/computer-chassis/Milo10/)
-    - Western Digital-WD SN530 M.2 2230 SSD 256 Go NVMe PCIe Gen3 x4
-    - Mini PCIE to NVME Adapter
-
-  - Raspberry Pi 3 Model B Plus Rev 1.3 with:
-    - [Raspberry Pi 3 Case](https://www.raspberrypi.com/products/raspberry-pi-3-case/)
-    - [Anker PowerConf S330](https://us.ankerwork.com/products/a3308) Speakerphone
+[Turing Pi 2.4](https://turingpi.com/) board with:
+  - 4 Raspberry Pi Compute Module 4, 8 GB RAM, 32 GB eMMC
+  - 4 IBest Aluminum Heatsink
+  - [SilverStone Milo 10 mini ITX Case](https://www.silverstonetek.com/en/product/info/computer-chassis/Milo10/)
+  - Mini PCIE to NVME Adapter
+  - Western Digital-WD SN530 M.2 2230 SSD 256 Go NVMe PCIe Gen3 x4
 
 ### Software
 - [K3s](https://k3s.io/) for Kubernetes containers orchestration
@@ -93,10 +95,9 @@ Raspberry Pi 4 Model B Rev 1.2 with:
 - [NFS Subdir External Provisioner](https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner) for NFS
 - [Duplicati](https://duplicati.com/) for backups
 - [Home Assistant](https://www.home-assistant.io/) for home automation
+- [Music Assistant](https://www.music-assistant.io/) for music library management
 - [Wyoming Vosk](https://github.com/rhasspy/wyoming-vosk) for speech to text
 - [Wyoming Piper](https://github.com/rhasspy/wyoming-piper) for text to speech
-- [Wyoming Porcupine1](https://github.com/rhasspy/wyoming-porcupine1) for wake word detection
-- [Wyoming Satellite](https://github.com/rhasspy/wyoming-satellite) for voice assistant
 - [Kube Prometheus Stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) for monitoring
 - [Portainer](https://www.portainer.io/) for monitoring
 
@@ -111,3 +112,11 @@ Raspberry Pi 5 Model B Rev 1.0 8Gb with:
 - [Open Media Vault](https://www.openmediavault.org) for NAS solution
 - [Prometheus](https://prometheus.io/) for monitoring
 - [Node Exporter](https://github.com/prometheus/node_exporter) for monitoring
+
+## Home Runner
+### Hardware
+Raspberry Pi 3 Model B Plus Rev 1.3 with:
+  - [Raspberry Pi 3 Case](https://www.raspberrypi.com/products/raspberry-pi-3-case/)
+
+### Software
+  - [Github Actions Self-hosted runner](https://docs.github.com/en/actions/concepts/runners/self-hosted-runners)
