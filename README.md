@@ -95,6 +95,7 @@ Raspberry Pi 4 Model B Rev 1.2 with:
 - [NFS Subdir External Provisioner](https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner) for NFS
 - [Duplicati](https://duplicati.com/) for backups
 - [Home Assistant](https://www.home-assistant.io/) for home automation
+- [Music Assistant](https://www.music-assistant.io/) for music library management
 - [Wyoming Vosk](https://github.com/rhasspy/wyoming-vosk) for speech to text
 - [Wyoming Piper](https://github.com/rhasspy/wyoming-piper) for text to speech
 - [Kube Prometheus Stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) for monitoring
