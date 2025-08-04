@@ -1,41 +1,41 @@
 ungrouped:
   hosts:
     udm:
-      ansible_host: 192.168.1.1
+      ansible_host: 192.168.2.1
     rpi4:
-      ansible_host: 192.168.1.10
+      ansible_host: 192.168.2.10
       ansible_user: "{{ inventory_hosts.rpi4.user }}"
       ansible_password: "{{ inventory_hosts.rpi4.password }}"
     rpi5:
-      ansible_host: 192.168.1.12
+      ansible_host: 192.168.2.11
       ansible_user: "{{ inventory_hosts.rpi5.user }}"
       ansible_password: "{{ inventory_hosts.rpi5.password }}"
     tpi2:
-      ansible_host: 192.168.1.100
+      ansible_host: 192.168.2.100
     rpi3:
-      ansible_host: 192.168.1.105
+      ansible_host: 192.168.2.105
       ansible_user: "{{ inventory_hosts.rpi3.user }}"
       ansible_password: "{{ inventory_hosts.rpi3.password }}"
 
 tpi2_rpi_cm4:
   hosts:
     rpi-cm4-1:
-      ansible_host: 192.168.1.101
+      ansible_host: 192.168.2.101
       ansible_user: "{{ inventory_hosts.rpi_cm4_1.user }}"
       ansible_password: "{{ inventory_hosts.rpi_cm4_1.password }}"
       node_number: 1
     rpi-cm4-2:
-      ansible_host: 192.168.1.102
+      ansible_host: 192.168.2.102
       ansible_user: "{{ inventory_hosts.rpi_cm4_2.user }}"
       ansible_password: "{{ inventory_hosts.rpi_cm4_2.password }}"
       node_number: 2
     rpi-cm4-3:
-      ansible_host: 192.168.1.103
+      ansible_host: 192.168.2.103
       ansible_user: "{{ inventory_hosts.rpi_cm4_3.user }}"
       ansible_password: "{{ inventory_hosts.rpi_cm4_3.password }}"
       node_number: 3
     rpi-cm4-4:
-      ansible_host: 192.168.1.104
+      ansible_host: 192.168.2.104
       ansible_user: "{{ inventory_hosts.rpi_cm4_4.user }}"
       ansible_password: "{{ inventory_hosts.rpi_cm4_4.password }}"
       node_number: 4
