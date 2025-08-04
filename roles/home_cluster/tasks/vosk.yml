@@ -30,7 +30,7 @@
   ansible.builtin.get_url:
     url: https://huggingface.co/rhasspy/vosk-models/resolve/main/fr/vosk-model-small-fr-0.22.zip
     dest: /mnt/ssd/vosk/vosk-model-small-fr-0.22.zip
-    mode: "0440"
+    mode: "644"
 
 - name: Extract vosk-model-small-fr
   when: k3s_control_node is defined and k3s_control_node
