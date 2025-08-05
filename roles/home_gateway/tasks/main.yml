@@ -61,7 +61,3 @@
 - name: Install Portainer Agent
   tags: portainer
   ansible.builtin.import_tasks: install_portainer_agent.yml
-
-- name: Install GitHub Actions Runner
-  tags: github_actions_runner
-  ansible.builtin.import_tasks: install_github_actions_runner.yml
