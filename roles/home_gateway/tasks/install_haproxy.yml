@@ -16,7 +16,7 @@
   community.docker.docker_container:
     user: root
     name: haproxy
-    image: haproxy:3.2.3
+    image: haproxy:3.2.4
     state: started
     restart: true
     restart_policy: unless-stopped
