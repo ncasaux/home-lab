@@ -1,7 +1,7 @@
 - name: Install Node Exporter
   community.docker.docker_container:
     name: node-exporter
-    image: prom/node-exporter:v1.9.1
+    image: prom/node-exporter:v1.10.2
     platform: linux/arm64
     state: started
     restart_policy: unless-stopped
