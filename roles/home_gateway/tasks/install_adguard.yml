@@ -20,7 +20,7 @@
   community.docker.docker_container:
     user: root
     name: adguard
-    image: adguard/adguardhome:v0.107.69
+    image: adguard/adguardhome:v0.107.71
     state: started
     restart: true
     restart_policy: unless-stopped
