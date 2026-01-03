@@ -10,7 +10,6 @@
     github_account: ncasaux
     github_repo: home-lab
     runner_user: "{{ hostvars[inventory_hostname].ansible_user }}"
-    access_token: "{{ home_runner_github_access_token }}"
   ansible.builtin.import_role:
     name: ansible-github_actions_runner
 
