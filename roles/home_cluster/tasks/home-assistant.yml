@@ -64,7 +64,7 @@
                   pathType: Prefix
                   backend:
                     service:
-                      name: dlna
+                      name: home-assistant-dlna
                       port:
                         name: dlna
 
