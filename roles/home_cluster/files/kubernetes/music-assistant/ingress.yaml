@@ -36,4 +36,11 @@ spec:
               service:
                 name: music-assistant
                 port:
-                  name: streamserver       
+                  name: streamserver
+          - path: /announcement
+            pathType: Prefix
+            backend:
+              service:
+                name: music-assistant
+                port:
+                  name: streamserver
