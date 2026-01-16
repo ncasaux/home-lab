@@ -16,7 +16,7 @@ spec:
         node-type: local
       containers:
         - name: music-assistant
-          image: ghcr.io/music-assistant/server:2.7.3
+          image: ghcr.io/music-assistant/server:2.7.4
           resources:
             requests:
               memory: "1Gi"
