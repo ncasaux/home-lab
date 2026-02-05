@@ -48,6 +48,16 @@
           app.kubernetes.io/name: home-assistant
       spec:
         rules:
+          - host: dlna.home-assistant.nkzo.ovh
+            http:
+              paths:
+                - path: /
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: home-assistant-dlna
+                      port:
+                        name: dlna
           - host: home-assistant.nkzo.ovh
             http:
               paths:
@@ -58,15 +68,6 @@
                       name: home-assistant
                       port:
                         name: http
-          - http:
-              paths:
-                - path: /notify
-                  pathType: Prefix
-                  backend:
-                    service:
-                      name: home-assistant-dlna
-                      port:
-                        name: dlna
 
 - name: Create Argo CD Application for Home Assistant
   when: k3s_control_node is defined and k3s_control_node
