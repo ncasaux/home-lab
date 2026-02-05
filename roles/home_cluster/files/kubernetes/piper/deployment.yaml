@@ -16,7 +16,7 @@ spec:
         node-type: local
       containers:
         - name: piper
-          image: rhasspy/wyoming-piper:2.2.1
+          image: rhasspy/wyoming-piper:2.2.2
           resources:
             requests:
               memory: "256Mi"
