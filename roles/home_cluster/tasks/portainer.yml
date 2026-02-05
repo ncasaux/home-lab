@@ -71,6 +71,9 @@
                         pathType: Prefix
               service:
                 type: ClusterIP
+              trusted_origins:
+                enabled: true
+                domains: portainer.nkzo.ovh
         destination:
           server: https://kubernetes.default.svc
           namespace: portainer
