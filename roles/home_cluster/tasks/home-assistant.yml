@@ -93,6 +93,35 @@
                 privileged: true
               configuration:
                 enabled: true
+                forceInit: true
+                templateConfig: |-
+                  default_config:
+                  http:
+                    use_x_forwarded_for: true
+                    trusted_proxies:
+                      - 10.0.0.0/8
+                      - 172.16.0.0/12
+                      - 192.168.0.0/16
+                      - 127.0.0.0/8
+                  automation: !include automations.yaml
+                  script: !include scripts.yaml
+                  scene: !include scenes.yaml
+                  zha:
+                    zigpy_config:
+                      ota:
+                        providers:
+                          - type: ikea
+                  prometheus:
+                    namespace: home_assistant
+                    filter:
+                      include_domains:
+                        - sensor
+                  logger:
+                    default: info
+                    logs:
+                      zigpy.ota: debug
+                      zigpy.ota.provider: debug
+                      zigpy.ota.image: debug
               persistence:
                 enabled: true
                 storageClass: nfs-client
