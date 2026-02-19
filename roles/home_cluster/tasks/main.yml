@@ -70,3 +70,11 @@
 - name: Install Portainer
   tags: portainer
   ansible.builtin.import_tasks: portainer.yml
+
+- name: Install Mosquitto
+  tags: mosquitto
+  ansible.builtin.import_tasks: mosquitto.yml
+
+- name: Install Zigbee2MQTT
+  tags: zigbee2mqtt
+  ansible.builtin.import_tasks: zigbee2mqtt.yml

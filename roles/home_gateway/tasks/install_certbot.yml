@@ -36,6 +36,7 @@
           - duplicati.nkzo.ovh
           - music-assistant.nkzo.ovh
           - openmediavault.nkzo.ovh
+          - zigbee2mqtt.nkzo.ovh
   ansible.builtin.import_role:
     name: geerlingguy.certbot
 
