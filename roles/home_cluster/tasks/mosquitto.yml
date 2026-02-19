@@ -1,0 +1,52 @@
+- name: Create mosquitto namespace
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: mosquitto
+
+- name: Create Argo CD Application for Mosquitto
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: mosquitto
+        namespace: argo-cd
+      spec:
+        project: default
+        source:
+          repoURL: https://bdclark.github.io/helm-charts
+          chart: mosquitto
+          targetRevision: '*'
+          helm:
+            valuesObject:
+              nodeSelector:
+                node-type: local
+              resources:
+                requests:
+                  memory: "64Mi"
+                  cpu: "1"
+                limits:
+                  memory: "256Mi"
+                  cpu: "4"
+        destination:
+          server: https://kubernetes.default.svc
+          namespace: mosquitto
+        syncPolicy:
+          retry:
+            limit: 2
+            backoff:
+              duration: 5s
+              maxDuration: 3m0s
+              factor: 2
+          automated:
+            prune: false
+            selfHeal: false
+          syncOptions:
+            - CreateNamespace=false
