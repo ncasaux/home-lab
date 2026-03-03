@@ -142,20 +142,6 @@ filtering:
   parental_block_host: family-block.dns.adguard.com
   safebrowsing_block_host: standard-block.dns.adguard.com
   rewrites:
-    - domain: rpi-cm4-1
-      answer: "{{ hostvars['rpi-cm4-1'].ansible_host }}"
-    - domain: rpi-cm4-2
-      answer: "{{ hostvars['rpi-cm4-2'].ansible_host }}"
-    - domain: rpi-cm4-3
-      answer: "{{ hostvars['rpi-cm4-3'].ansible_host }}"
-    - domain: rpi-cm4-4
-      answer: "{{ hostvars['rpi-cm4-4'].ansible_host }}"
-    - domain: rpi3
-      answer: "{{ hostvars['rpi3'].ansible_host }}"
-    - domain: rpi4
-      answer: "{{ hostvars['rpi4'].ansible_host }}"
-    - domain: rpi5
-      answer: "{{ hostvars['rpi5'].ansible_host }}"
     - domain: '*.nkzo.ovh'
       answer: "{{ hostvars['rpi4'].ansible_host }}"
   safebrowsing_cache_size: 1048576
