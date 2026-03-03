@@ -8,6 +8,33 @@
       metadata:
         name: mosquitto
 
+- name: Create mosquitto directory
+  when: k3s_control_node is defined and k3s_control_node
+  ansible.builtin.file:
+    path: /mnt/ssd/mosquitto
+    state: directory
+    mode: "777"
+
+- name: Create persistent volume for Mosquitto
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: PersistentVolume
+      metadata:
+        name: mosquitto
+        labels:
+          app.kubernetes.io/name: mosquitto
+      spec:
+        storageClassName: nfs-client
+        capacity:
+          storage: 1Gi
+        accessModes:
+          - ReadWriteOnce
+        nfs:
+          server: "{{ hostvars['rpi-cm4-1'].ansible_host }}"
+          path: /mnt/ssd/mosquitto
+
 - name: Create Argo CD Application for Mosquitto
   when: k3s_control_node is defined and k3s_control_node
   kubernetes.core.k8s:
@@ -35,6 +62,10 @@
                 limits:
                   memory: "256Mi"
                   cpu: "4"
+              persistence:
+                enabled: true
+                storageClass: nfs-client
+                size: 1Gi
         destination:
           server: https://kubernetes.default.svc
           namespace: mosquitto
