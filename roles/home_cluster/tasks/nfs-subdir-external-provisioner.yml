@@ -52,7 +52,7 @@
                 node-type: local
               nfs:
                 path: /mnt/ssd
-                server: rpi-cm4-1
+                server: "{{ hostvars['rpi-cm4-1'].ansible_host }}"
         destination:
           server: https://kubernetes.default.svc
           namespace: nfs-system

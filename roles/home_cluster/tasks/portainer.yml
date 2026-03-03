@@ -32,7 +32,7 @@
         accessModes:
           - ReadWriteOnce
         nfs:
-          server: "{{ inventory_hostname }}"
+          server: "{{ hostvars['rpi-cm4-1'].ansible_host }}"
           path: /mnt/ssd/portainer
 
 - name: Create Argo CD Application for Portainer
@@ -71,7 +71,7 @@
                         pathType: Prefix
               service:
                 type: ClusterIP
-              trusted_origins:
+              trusted_origins: # ne fonctionne pas, génère un déploiement avec --trusted-origins="portainer.nkzo.ovh"' https://github.com/portainer/k8s/pull/186
                 enabled: true
                 domains: portainer.nkzo.ovh
         destination:

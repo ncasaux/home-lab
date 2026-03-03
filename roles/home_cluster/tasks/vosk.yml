@@ -22,7 +22,7 @@
         accessModes:
           - ReadWriteOnce
         nfs:
-          server: "{{ inventory_hostname }}"
+          server: "{{ hostvars['rpi-cm4-1'].ansible_host }}"
           path: /mnt/ssd/vosk
 
 - name: Download vosk-model-small-fr

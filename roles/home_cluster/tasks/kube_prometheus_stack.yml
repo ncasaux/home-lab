@@ -32,7 +32,7 @@
         accessModes:
           - ReadWriteOnce
         nfs:
-          server: "{{ inventory_hostname }}"
+          server: "{{ hostvars['rpi-cm4-1'].ansible_host }}"
           path: /mnt/ssd/prometheus
 
 - name: Create Kubernetes secrets for Home Assistant Prometheus endpoint token
@@ -72,7 +72,7 @@
         accessModes:
           - ReadWriteOnce
         nfs:
-          server: "{{ inventory_hostname }}"
+          server: "{{ hostvars['rpi-cm4-1'].ansible_host }}"
           path: /mnt/ssd/grafana
 
 - name: Create Kubernetes secrets for Grafana
