@@ -22,7 +22,7 @@
     release_namespace: argo-cd
     create_namespace: true
     update_repo_cache: true
-    chart_version: 9.4.15
+    chart_version: 9.4.17
     release_values:
       global:
         nodeSelector:
