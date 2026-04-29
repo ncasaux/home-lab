@@ -40,6 +40,10 @@ spec:
               value: "OpenThread"
             - name: OT_VENDOR_MODEL
               value: "BorderRouter"
+            - name: OT_REST_LISTEN_ADDR
+              value: "0.0.0.0"
+            - name: OT_REST_LISTEN_PORT
+              value: "8081" 
           volumeMounts:
             - name: openthread-border-router
               mountPath: /data
