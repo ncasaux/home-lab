@@ -1,0 +1,81 @@
+- name: Configure IP forwarding for OpenThread Border Router
+  when: ip_fowarding is defined and ip_fowarding
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/sysctl.d/99-openthread-border-router.conf
+    content: |
+      net.ipv6.conf.eth0.accept_ra = 2
+      net.ipv6.conf.eth0.accept_ra_rt_info_max_plen = 64
+      net.ipv6.conf.all.forwarding = 1
+      net.ipv4.ip_forward = 1
+    mode: "644"
+  notify: Apply sysctl settings
+
+- name: Create openthread-border-router namespace
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: openthread-border-router
+
+- name: Create openthread-border-router directory
+  when: k3s_control_node is defined and k3s_control_node
+  ansible.builtin.file:
+    path: /mnt/ssd/openthread-border-router
+    state: directory
+    mode: "777"
+
+- name: Create persistent volume for OpenThread Border Router
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: PersistentVolume
+      metadata:
+        name: openthread-border-router
+        labels:
+          app.kubernetes.io/name: openthread-border-router
+      spec:
+        storageClassName: nfs-client
+        capacity:
+          storage: 5Gi
+        accessModes:
+          - ReadWriteOnce
+        nfs:
+          server: "{{ hostvars['rpi-cm4-1'].ansible_host }}"
+          path: /mnt/ssd/openthread-border-router
+
+- name: Create Argo CD Application for OpenThread Border Router
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: openthread-border-router
+        namespace: argo-cd
+      spec:
+        project: default
+        source:
+          repoURL: https://github.com/ncasaux/home-lab
+          path: roles/home_cluster/files/kubernetes/openthread-border-router
+          targetRevision: thread # FIXME
+        destination:
+          server: https://kubernetes.default.svc
+          namespace: openthread-border-router
+        syncPolicy:
+          retry:
+            limit: 2
+            backoff:
+              duration: 5s
+              maxDuration: 3m0s
+              factor: 2
+          automated:
+            prune: false
+            selfHeal: false
+          syncOptions:
+            - CreateNamespace=false

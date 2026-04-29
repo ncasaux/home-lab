@@ -78,3 +78,7 @@
 - name: Install Zigbee2MQTT
   tags: zigbee2mqtt
   ansible.builtin.import_tasks: zigbee2mqtt.yml
+
+- name: Install OpenThread Border Router
+  tags: openthread-border-router
+  ansible.builtin.import_tasks: openthread-border-router.yml

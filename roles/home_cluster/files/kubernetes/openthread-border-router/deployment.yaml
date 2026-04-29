@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openthread-border-router
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openthread-border-router
+  template:
+    metadata:
+      labels:
+        app: openthread-border-router
+    spec:
+      hostNetwork: true
+      nodeSelector:
+        kubernetes.io/hostname: rpi-cm4-4
+      containers:
+        - name: openthread-border-router
+          image: openthread/border-router:latest
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "256Mi"
+              cpu: "4"
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          env:
+            - name: OT_RCP_DEVICE
+              value: "spinel+hdlc+uart:///dev/ttyUSB2?uart-baudrate=460800"
+            - name: OT_INFRA_IF
+              value: "eth0"
+            - name: OT_THREAD_IF
+              value: "wpan0"
+            - name: OT_LOG_LEVEL
+              value: "7"
+          volumeMounts:
+            - name: openthread-border-router
+              mountPath: /data
+            - name: dev-ttyusb2
+              mountPath: /dev/ttyUSB2
+            - name: dev-net-tun
+              mountPath: /dev/net/tun
+      volumes:
+        - name: openthread-border-router
+          persistentVolumeClaim:
+            claimName: openthread-border-router
+        - name: dev-ttyusb2
+          hostPath:
+            path: /dev/serial/by-id/usb-SONOFF_SONOFF_Dongle_Max_MG24_b0b74610beffef11be1f8d256d9880ab-if00-port0
+            type: CharDevice
+        - name: dev-net-tun
+          hostPath:
+            path: /dev/net/tun
+            type: CharDevice

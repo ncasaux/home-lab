@@ -106,7 +106,7 @@
                   automation: !include automations.yaml
                   script: !include scripts.yaml
                   scene: !include scenes.yaml
-                  zha:
+                  zha: #FIXME Config ZHA supprimer
                     zigpy_config:
                       ota:
                         providers:
