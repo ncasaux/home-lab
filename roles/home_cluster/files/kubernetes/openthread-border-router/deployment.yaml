@@ -26,9 +26,7 @@ spec:
               memory: "256Mi"
               cpu: "4"
           securityContext:
-            capabilities:
-              add:
-                - NET_ADMIN
+            privileged: true
           env:
             - name: OT_RCP_DEVICE
               value: "spinel+hdlc+uart:///dev/ttyUSB2?uart-baudrate=460800"
