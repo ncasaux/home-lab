@@ -25,6 +25,7 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "4"
+          command: ["sleep", "infinity"]
           securityContext:
             privileged: true
           env:
