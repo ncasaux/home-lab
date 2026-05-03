@@ -11,8 +11,6 @@ spec:
     metadata:
       labels:
         app: matter-server
-      annotations:
-        container.apparmor.security.beta.kubernetes.io/matter-server: unconfined
     spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
@@ -20,7 +18,7 @@ spec:
         kubernetes.io/hostname: rpi-cm4-4
       containers:
         - name: matter-server
-          image: ghcr.io/home-assistant-libs/python-matter-server:stable
+          image: ghcr.io/matter-js/matterjs-server:stable
           resources:
             requests:
               memory: "128Mi"
@@ -31,14 +29,7 @@ spec:
           volumeMounts:
             - name: matter-server
               mountPath: /data
-            - name: dbus
-              mountPath: /run/dbus
-              readOnly: true
       volumes:
         - name: matter-server
           persistentVolumeClaim:
             claimName: matter-server
-        - name: dbus
-          hostPath:
-            path: /run/dbus
-            type: Directory
