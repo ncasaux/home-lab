@@ -35,39 +35,6 @@
           server: "{{ hostvars['rpi-cm4-1'].ansible_host }}"
           path: /mnt/ssd/home-assistant
 
-- name: Create ingress for Home Assistant
-  when: k3s_control_node is defined and k3s_control_node
-  kubernetes.core.k8s:
-    definition:
-      apiVersion: v1
-      kind: Ingress
-      metadata:
-        name: home-assistant
-        namespace: home-assistant
-        labels:
-          app.kubernetes.io/name: home-assistant
-      spec:
-        rules:
-          - host: dlna.home-assistant.nkzo.ovh
-            http:
-              paths:
-                - path: /
-                  pathType: Prefix
-                  backend:
-                    service:
-                      name: home-assistant-dlna
-                      port:
-                        name: dlna
-          - host: home-assistant.nkzo.ovh
-            http:
-              paths:
-                - path: /
-                  pathType: Prefix
-                  backend:
-                    service:
-                      name: home-assistant
-                      port:
-                        name: http
 
 - name: Create Argo CD Application for Home Assistant
   when: k3s_control_node is defined and k3s_control_node
@@ -87,6 +54,8 @@
           targetRevision: '*'
           helm:
             valuesObject:
+              hostNetwork: true
+              dnsPolicy: ClusterFirstWithHostNet
               nodeSelector:
                 kubernetes.io/hostname: rpi-cm4-4
               securityContext:
@@ -128,8 +97,6 @@
                 matchLabels:
                   app.kubernetes.io/name: home-assistant
                 size: 5Gi
-              ingress:
-                external: true
               additionalVolumes:
                 - hostPath:
                     path: /dev/serial/by-id/usb-RFXCOM_RFXtrx433XL_DO3HR29T-if00-port0
@@ -138,15 +105,7 @@
               additionalMounts:
                 - mountPath: /dev/ttyUSB0
                   name: rfxcom
-              additionalPorts:
-                - name: dlna
-                  containerPort: 5555
-                  protocol: TCP
-              additionalServices:
-                - name: dlna
-                  port: 5555
-                  targetPort: dlna
-                  protocol: TCP
+
               initContainers:
                 - name: init-hacs
                   image: bash

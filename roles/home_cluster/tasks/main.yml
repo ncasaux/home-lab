@@ -82,3 +82,7 @@
 - name: Install OpenThread Border Router
   tags: openthread-border-router
   ansible.builtin.import_tasks: openthread-border-router.yml
+
+- name: Install Matter Server
+  tags: matter-server
+  ansible.builtin.import_tasks: matter-server.yml

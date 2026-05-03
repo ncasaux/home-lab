@@ -1,0 +1,68 @@
+- name: Create matter-server namespace
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: matter-server
+
+- name: Create matter-server directory
+  when: k3s_control_node is defined and k3s_control_node
+  ansible.builtin.file:
+    path: /mnt/ssd/matter-server
+    state: directory
+    mode: "777"
+
+- name: Create persistent volume for Matter Server
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: PersistentVolume
+      metadata:
+        name: matter-server
+        labels:
+          app.kubernetes.io/name: matter-server
+      spec:
+        storageClassName: nfs-client
+        capacity:
+          storage: 1Gi
+        accessModes:
+          - ReadWriteOnce
+        nfs:
+          server: "{{ hostvars['rpi-cm4-1'].ansible_host }}"
+          path: /mnt/ssd/matter-server
+
+- name: Create Argo CD Application for Matter Server
+  when: k3s_control_node is defined and k3s_control_node
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: matter-server
+        namespace: argo-cd
+      spec:
+        project: default
+        source:
+          repoURL: https://github.com/ncasaux/home-lab
+          path: roles/home_cluster/files/kubernetes/matter-server
+          targetRevision: thread # FIXME
+        destination:
+          server: https://kubernetes.default.svc
+          namespace: matter-server
+        syncPolicy:
+          retry:
+            limit: 2
+            backoff:
+              duration: 5s
+              maxDuration: 3m0s
+              factor: 2
+          automated:
+            prune: false
+            selfHeal: false
+          syncOptions:
+            - CreateNamespace=false

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matter-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: matter-server
+  template:
+    metadata:
+      labels:
+        app: matter-server
+      annotations:
+        container.apparmor.security.beta.kubernetes.io/matter-server: unconfined
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      nodeSelector:
+        kubernetes.io/hostname: rpi-cm4-4
+      containers:
+        - name: matter-server
+          image: ghcr.io/home-assistant-libs/python-matter-server:stable
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "2"
+          volumeMounts:
+            - name: matter-server
+              mountPath: /data
+            - name: dbus
+              mountPath: /run/dbus
+              readOnly: true
+      volumes:
+        - name: matter-server
+          persistentVolumeClaim:
+            claimName: matter-server
+        - name: dbus
+          hostPath:
+            path: /run/dbus
+            type: Directory
