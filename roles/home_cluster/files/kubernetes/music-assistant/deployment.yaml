@@ -12,6 +12,7 @@ spec:
       labels:
         app: music-assistant
     spec:
+      hostNetwork: true
       nodeSelector:
         node-type: local
       containers:
