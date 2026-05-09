@@ -14,7 +14,7 @@ spec:
     spec:
       hostNetwork: true
       nodeSelector:
-        node-type: local
+        kubernetes.io/hostname: rpi-cm4-3
       containers:
         - name: music-assistant
           image: ghcr.io/music-assistant/server:2.8.6

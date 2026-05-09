@@ -6,7 +6,5 @@ spec:
   ports:
     - name: webserver
       port: 8095
-    - name: streamserver
-      port: 8097
   selector:
     app: music-assistant
