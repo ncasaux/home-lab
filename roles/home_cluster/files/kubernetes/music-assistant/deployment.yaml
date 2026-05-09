@@ -13,6 +13,7 @@ spec:
         app: music-assistant
     spec:
       hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       nodeSelector:
         kubernetes.io/hostname: rpi-cm4-3
       containers:
