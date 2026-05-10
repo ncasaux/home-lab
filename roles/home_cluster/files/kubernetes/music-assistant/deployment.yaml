@@ -4,6 +4,8 @@ metadata:
   name: music-assistant
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: music-assistant

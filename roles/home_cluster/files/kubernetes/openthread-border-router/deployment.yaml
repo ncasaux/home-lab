@@ -4,6 +4,8 @@ metadata:
   name: openthread-border-router
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: openthread-border-router
@@ -17,7 +19,8 @@ spec:
         kubernetes.io/hostname: rpi-cm4-4
       containers:
         - name: openthread-border-router
-          image: openthread/border-router:latest
+          image: openthread/border-router:latest #TODO no fixed version
+          imagePullPolicy: Always #TODO no fixed version
           resources:
             requests:
               memory: "256Mi"
