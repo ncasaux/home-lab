@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matter-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: matter-server
+  template:
+    metadata:
+      labels:
+        app: matter-server
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      nodeSelector:
+        kubernetes.io/hostname: rpi-cm4-4
+      containers:
+        - name: matter-server
+          image: ghcr.io/matter-js/matterjs-server:0.6.8
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "2"
+          volumeMounts:
+            - name: matter-server
+              mountPath: /data
+      volumes:
+        - name: matter-server
+          persistentVolumeClaim:
+            claimName: matter-server

@@ -39,6 +39,7 @@ tpi2_rpi_cm4:
       ansible_user: "{{ inventory_hosts.rpi_cm4_4.user }}"
       ansible_password: "{{ inventory_hosts.rpi_cm4_4.password }}"
       node_number: 4
+      ip_fowarding: true
 
 k3s_cluster_server:
   hosts:

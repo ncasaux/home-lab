@@ -107,7 +107,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "home_assistant_sensor_temperature_celsius{job=\"home-assistant\", entity=\"sensor.imagintronix_00_01_temperature\"}",
+          "expr": "home_assistant_sensor_temperature_celsius{job=\"home-assistant\", entity=\"sensor.imagintronix_1_temperature\"}",
           "instant": false,
           "legendFormat": "Capteur n°1",
           "range": true,
@@ -119,7 +119,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "home_assistant_sensor_temperature_celsius{job=\"home-assistant\", entity=\"sensor.imagintronix_00_02_temperature\"}",
+          "expr": "home_assistant_sensor_temperature_celsius{job=\"home-assistant\", entity=\"sensor.imagintronix_2_temperature\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "Capteur n°2",
@@ -132,7 +132,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "home_assistant_sensor_temperature_celsius{job=\"home-assistant\", entity=\"sensor.imagintronix_00_03_temperature\"}",
+          "expr": "home_assistant_sensor_temperature_celsius{job=\"home-assistant\", entity=\"sensor.imagintronix_3_temperature\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "Capteur n°3",
@@ -229,7 +229,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "home_assistant_sensor_humidity_percent{job=\"home-assistant\", entity=\"sensor.imagintronix_00_01_humidite\"}",
+          "expr": "home_assistant_sensor_humidity_percent{job=\"home-assistant\", entity=\"sensor.imagintronix_1_humidite\"}",
           "instant": false,
           "legendFormat": "Capteur n°1",
           "range": true,
@@ -241,7 +241,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "home_assistant_sensor_humidity_percent{job=\"home-assistant\", entity=\"sensor.imagintronix_00_02_humidite\"}",
+          "expr": "home_assistant_sensor_humidity_percent{job=\"home-assistant\", entity=\"sensor.imagintronix_2_humidite\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "Capteur n°2",
@@ -254,7 +254,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "home_assistant_sensor_humidity_percent{job=\"home-assistant\", entity=\"sensor.imagintronix_00_03_humidite\"}",
+          "expr": "home_assistant_sensor_humidity_percent{job=\"home-assistant\", entity=\"sensor.imagintronix_3_humidite\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "Capteur n°3",
