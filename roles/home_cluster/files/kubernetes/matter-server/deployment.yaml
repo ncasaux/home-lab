@@ -18,7 +18,7 @@ spec:
         kubernetes.io/hostname: rpi-cm4-4
       containers:
         - name: matter-server
-          image: ghcr.io/matter-js/matterjs-server:stable
+          image: ghcr.io/matter-js/matterjs-server:0.6.8
           resources:
             requests:
               memory: "128Mi"
