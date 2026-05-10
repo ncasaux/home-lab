@@ -63,7 +63,7 @@
         source:
           repoURL: https://github.com/ncasaux/home-lab
           path: roles/home_cluster/files/kubernetes/openthread-border-router
-          targetRevision: thread # FIXME
+          targetRevision: main
         destination:
           server: https://kubernetes.default.svc
           namespace: openthread-border-router

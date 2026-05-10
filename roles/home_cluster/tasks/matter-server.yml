@@ -50,7 +50,7 @@
         source:
           repoURL: https://github.com/ncasaux/home-lab
           path: roles/home_cluster/files/kubernetes/matter-server
-          targetRevision: thread # FIXME
+          targetRevision: main
         destination:
           server: https://kubernetes.default.svc
           namespace: matter-server
