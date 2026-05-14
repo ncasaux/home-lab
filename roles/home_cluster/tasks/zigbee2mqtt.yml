@@ -89,6 +89,8 @@
                   adapter: ember
                 advanced:
                   log_level: info
+              service:
+                type: ClusterIP
               ingress:
                 enabled: true
                 ingressClassName: traefik
