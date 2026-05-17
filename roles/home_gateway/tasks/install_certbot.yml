@@ -32,9 +32,13 @@
           - unifi.nkzo.ovh
           - turingpi2.nkzo.ovh
           - home-assistant.nkzo.ovh
+          - music-assistant.nkzo.ovh
           - portainer.nkzo.ovh
           - duplicati.nkzo.ovh
           - openmediavault.nkzo.ovh
+          - matter-server.nkzo.ovh
+          - openthread-border-router.nkzo.ovh
+          - zigbee2mqtt.nkzo.ovh
   ansible.builtin.import_role:
     name: geerlingguy.certbot
 
