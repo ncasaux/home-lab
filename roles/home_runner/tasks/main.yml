@@ -4,12 +4,6 @@
     state: directory
     mode: "755"
 
-- name: Install role monolithprojects.github_actions_runner
-  community.general.ansible_galaxy_install:
-    type: role
-    name: monolithprojects.github_actions_runner
-    force: true
-
 - name: Install GitHub Actions Runner
   become: true
   vars:

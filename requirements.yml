@@ -1,4 +1,7 @@
 ---
+roles:
+  - name: monolithprojects.github_actions_runner
+
 collections:
   - name: kubernetes.core
     version: ">=6.0.0"
