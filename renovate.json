@@ -19,6 +19,10 @@
       "matchUpdateTypes": ["patch", "digest"],
       "automerge": true,
       "minimumReleaseAge": "3 days"
+    },
+    {
+      "matchPackageNames": ["k3s"],
+      "automerge": false
     }
   ],
   "kubernetes": {
