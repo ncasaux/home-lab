@@ -13,6 +13,14 @@
     "Ingress"
   ],
   "prConcurrentLimit": 20,
+  "platformAutomerge": true,
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["patch", "digest"],
+      "automerge": true,
+      "minimumReleaseAge": "3 days"
+    }
+  ],
   "kubernetes": {
     "fileMatch": [
       "^roles/home_cluster/files/kubernetes/.*/deployment\\.yaml$"
