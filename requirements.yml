@@ -1,15 +1,18 @@
 ---
 roles:
   - name: monolithprojects.github_actions_runner
+  - name: geerlingguy.docker
+  - name: geerlingguy.ansible
+  - name: geerlingguy.certbot
+  - name: xanmanning.k3s
+  - name: geerlingguy.nfs
+  - name: geerlingguy.pip
+  - name: geerlingguy.helm
+  - name: geerlingguy.git
 
 collections:
   - name: kubernetes.core
-    version: ">=6.0.0"
   - name: community.docker
-    version: ">=5.2.2"
   - name: community.grafana
-    version: ">=2.3.0"
   - name: ansible.posix
-    version: ">=2.2.2"
   - name: prometheus.prometheus
-    version: ">=0.30.1"

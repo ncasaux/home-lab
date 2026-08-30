@@ -14,8 +14,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Install Ansible collections
-        run: ansible-galaxy collection install -r requirements.yml
+      - name: Install Ansible requirements
+        run: |
+          ansible-galaxy role install -r requirements.yml --force
+          ansible-galaxy collection install -r requirements.yml --upgrade
 
       - name: Run Ansible tasks
         run: |
