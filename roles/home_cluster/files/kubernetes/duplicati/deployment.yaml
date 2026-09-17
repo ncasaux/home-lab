@@ -18,7 +18,7 @@ spec:
         node-type: local
       containers:
         - name: duplicati
-          image: lscr.io/linuxserver/duplicati:2.3.0
+          image: lscr.io/linuxserver/duplicati:2.4.0
           resources:
             requests:
               memory: "1Gi"
