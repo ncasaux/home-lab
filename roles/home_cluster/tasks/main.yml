@@ -51,10 +51,6 @@
   tags: piper
   ansible.builtin.import_tasks: piper.yml
 
-- name: Install Porcupine1
-  tags: porcupine1
-  ansible.builtin.import_tasks: porcupine1.yml
-
 - name: Install Music Assistant
   tags: music-assistant
   ansible.builtin.import_tasks: music-assistant.yml
