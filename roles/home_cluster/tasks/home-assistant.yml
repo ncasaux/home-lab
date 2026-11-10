@@ -94,13 +94,6 @@
                 - mountPath: /dev/ttyUSB0
                   name: rfxcom
 
-              initContainers:
-                - name: init-hacs
-                  image: bash
-                  command: ["bash", "-c", "cd /config && wget -O - https://get.hacs.xyz | bash -"]
-                  volumeMounts:
-                    - mountPath: /config
-                      name: home-assistant
               resources:
                 requests:
                   memory: "1Gi"
