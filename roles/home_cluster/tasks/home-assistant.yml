@@ -40,7 +40,6 @@
   when: k3s_control_node is defined and k3s_control_node
   kubernetes.core.k8s:
     state: present
-    force: true
     definition:
       apiVersion: argoproj.io/v1alpha1
       kind: Application
